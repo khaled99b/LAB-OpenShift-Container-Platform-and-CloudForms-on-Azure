@@ -1,6 +1,3 @@
-# LAB-OpenShift-Container-Platform-and-CloudForms-on-Azure-
-Installation and configuration of Red Hat OpenShift and CloudForms on Azure and integration with OMS
-
 
 
  
@@ -13,12 +10,12 @@ EXERCISE-3: Create and manage Applications	17
 EXERCISE-4: Configuring automated builds	22
 EXERCISE-5: Continuous deployment	24
 EXERCISE-6: Mini project: JBOSS EAP application	28
-EXERCISE-7: Monitoring oepnshift with azure oms	36
-EXERCISE-8: Red Hat Cloud Forms on Azure	41
-End the lab	55
-References	55
-Useful links	55
-Redhat and Microsoft partnership	55
+EXERCISE-7: Monitoring oepnshift with azure oms	37
+EXERCISE-8: Red Hat Cloud Forms on Azure	42
+End the lab	56
+References	56
+Useful links	56
+Redhat and Microsoft partnership	56
 
  
 OBJECTIVES AND PRE-REQUISITES
@@ -76,6 +73,7 @@ $ az keyvault secret set --vault-name ossKV -n ossSecret --file ~/.ssh/osslab_rs
 
 The deployment of OpenShift relies on Ansible scripts that should be configured for Azure as the cloud provider. During and post-installation, OpenShift requires access to some Azure resources, like provisioning an Azure managed disk for persistence storage backend. When you have an application that needs to access or modify resources, you must set up an Azure Active Directory (AD) application and assign the required permissions to it. The service principal object defines the policy and permissions for an application's use in a specific tenant, providing the basis for a security principal to represent the application at run-time.
 5.	Create an Azure Active Directory Service Principal and choose a different password. Copy the resource group scope from step number 3.
+
 $ az ad sp create-for-rbac -n openshiftcloudprovider --password changeMePassword --role contributor --scopes /subscriptions/f3a5dfdb-e863-40d9-b23c-752b886c0260/resourceGroups/ossdemo
 
 
@@ -89,22 +87,19 @@ $ az ad sp show --id http://openshiftcloudprovider
 -	At this stage we will need Red Hat Network or Red Hat satellite credentials to register RHEL vms with RedHat and get access to the required software channels during the deployment. More specifically, we will need:
 o	Red Hat Network/Satellite name
 o	The associated password or activation key
--	Pool Id provides access to the required software channels for Openshift and Cloudforms. PoolId can be listed by invoking the command 'subscription-manager list -available' from a registered RHEL system. Contact your Red Hat admin or Red Hat support if you are missing information
--	For high availability consideration, we are deploying 3 vms for each type (master, infra and node). If you want to deploy the lab with minimal cost, you can reduce the number of vms to one per each. Also, you can scaledown the vm families, but preferably stick to vms with SSD disks for faster deployment. 
+-	PoolId provides access to the required software channels for Openshift and Cloudforms. PoolId can be listed by invoking the command 'subscription-manager list -available' from a registered RHEL system. Contact your Red Hat admin or Red Hat support if you are missing information.
+-	For high availability consideration, we are deploying 3 vms for each type (master, infra and agent). If you want to deploy the lab with minimal cost, you can reduce the number of vms to one per each. Also, you can scale down the vm families, but preferably stick to vms with SSD disks for faster deployment. 
 -	The master and infra load balancer DNSs (in red circles) should be globally unique. Choose your own names. 
 
      
-9.	From the Azure portal, go to your resource group “ossdemo”, track the progress of the deployment and make sure the deployment finishes, successfully.
+9.	From the Azure portal, go to your resource group “ossdemo”, track the progress of the deployment and make sure the deployment finishes, successfully. The process should last around 20 minutes. It is a good time to have a break. 
   
 
 The following diagram explains the physical architecture of the deployed cluster.
 
-Figure 6: Deployment diagram
-
 The bastion server implements mainly two distinct functions. One is that of a secure way to connect to all the nodes, and second that of the "installer" of the system. The bastion host is the only ingress point for SSH in the cluster from external entities. When connecting to the OpenShift Container Platform infrastructure, the bastion forwards the request to the appropriate server.
 The next diagram, explains the role and tasks of the Openshift master/agents and the logical architecture of the solution. 
 
-Figure 7: OpenShift logical architecture
  
 EXERCISE-2: CREATE AND MANAGE PROJECTS 
 There are many ways to launch images within an OpenShift project. In this exercise we will focus on the graphical portal.
@@ -112,7 +107,6 @@ To create an application, you must first create a new project, then select an In
 1.	Login to your github account, or create one if you didn’t. 
 2.	Browse to openshift/ruby-ex repository and fork it into your github account
     
-Figure 8: Fork ruby-ex sample application
 3.	From your browser, visit the OpenShift web console at https://FQDN-master-node:8443. The web site, uses a self-signed certificate, so if prompted, continue and ignore the browser warning. 
 4.	Log in using your username and password. 
   
@@ -176,7 +170,7 @@ Once there is a code change, the Github webhook will trigger the build of a new 
  			 Figure 21: Continuous deployment pipeline
 
 1.	Use Azure cloud shell or install Git into your local machine 
-PS: If you don’t want to use git, you still can perform this exercise by moving to step-5 and editing the file config.ru, directly from the web interface of github and then go to step-8.    
+PS: If you don’t want to use git, you still can perform this exercise by moving to step-5 and editing the file config.ru, directly from the web interface of github and then go to step-7.    
 Create a “dev” folder and change into. 
 $ mkdir dev && cd dev
 
@@ -207,10 +201,12 @@ a.	Click the Browse tab, then click Builds.
 b.	Find your build, then click Start Build.
  
 EXERCISE-6: MINI PROJECT: JBOSS EAP APPLICATION
+
 In this mini project, we will deploy a three tiers application consisting of Leaflet mapping front end with a JaxRS and MongoDB back end. The application, allows to visualize the locations of major National Parks and Historic Sites (https://github.com/OpenShiftDemos/restify-mongodb-parks).   
 During this exercise, we will leverage the CLI tool of OpenShift.
 1.	Download and install the OpenShift CLI related to your operating system. The easiest way to download the CLI is by accessing the About page on the web console if your cluster administrator has enabled the download links. Another alternative is to ssh into your bastion host that has the CLI tool installed already.
- 
+
+
 2.	Use your openshift url endpoint to login to your environment from the CLI
 
  
@@ -218,9 +214,9 @@ During this exercise, we will leverage the CLI tool of OpenShift.
 
 4.	From the web console, add a new Java application using the following git lab repository https://gitlab.com/gshipley/nationalparks.git
 
- 
 
- 
+
+
 
 5.	List builds operations:
  
@@ -231,36 +227,46 @@ Output truncated ….
 
 7.	Browse the newly created application and verify it is available
 
- 
+
  
 8.	We can see the map but not the attraction points. The reason is that we only deployed the front-end application. What we will need now is to add a backend data base. From the web console, add a new persistent mongodb data store. And set the needed environment variables and specification as bellow:
 
+
+
 9.	The graphical portal should show two applications in our project
+
 
  
 
 10.	From the left menu in the web console, click on storage and verify that OpenShift created a persistent storage volume using Azure storage.
+ 
 11.	Change the deployment configuration of the front-end application to include the environment variables required to access the database
-12.	verify the last modification took place by running “oc get dc nationalparklocator -o json”
+
+12.	verify the last modification took place by running “oc get dc 
+nationalparklocator -o json”
 
 13.	Back to the graphical console, note the automatic migration to a new pod based on the new configuration
 
 
+14.	Navigate to the application end-point and verify that the parks are now showing on the map
+ 
 
-13. Navigate to the application end-point and verify that the parks are now showing on the map
+15.	Our new application became very popular, and we need to scale out our front end to two pods. Use “oc scale” to do it
+
+16.	Now, let’s test the self-healing, capabilities of OpenShift by deleting one of the running pods. Because, the desired state of the replication controller is 2 pods for the application “nationalparklocator”, OpenShift will automatically and instantly trigger the deployment of a new pod.
   
-
-14. Our new application became very popular, and we need to scale out our front end to two pods.
-15. Now, let’s test the self-healing, capabilities of OpenShift by deleting one of the running pods. Because, the desired state of the replication controller is 2 pods for the application “nationalparklocator”, OpenShift will automatically and instantly trigger the deployment of a new pod.
-   
+ 
 EXERCISE-7: MONITORING OEPNSHIFT WITH AZURE OMS
 
-Azure Operations Management Suite (OMS) provides native support to OpenShift. In this exercise, we will walk through the steps of configuring OpenShift to export monitoring metrics directly to OMS
-1.	From the Azure portal create a new OMS workspace. Open the OMS portal and note the workspace id and one of the primary keys.
+Azure Operations Management Suite (OMS) provides native support to OpenShift. In this exercise, we will walk through the steps of configuring OpenShift to export monitoring metrics directly to OMS.
+1.	From the Azure portal create a new OMS workspace
 
 
 
-2.	From Cloud Shell ssh into the bastion host, then ssh into one of the master node and create an OpenShift project and account for OMS. 
+2.	Open the OMS portal and note the workspace id and one of the primary keys.
+
+
+3.	From Cloud Shell ssh into the bastion host, then ssh into one of the master node and create an OpenShift project and user account for OMS. 
 [ossadmin@oss-bastion ~]$ ssh oss-master-0
 [ossadmin@oss-master-0 ~]$ oadm new-project omslogging --node-selector='zone=default'
 [ossadmin@oss-master-0 ~]$ oc project omslogging
@@ -295,7 +301,7 @@ CloudForms is a first-class citizen on Azure and provides a solid hybrid cloud m
 1.	Login to Red Hat network portal and download the latest cloudforms vhd image for Azure. You will need an active Red Hat subscription. (https://www.redhat.com/en/technologies/management/cloudforms) 
 2.	We will need to round up the size of the vhd image to a multiple number of MB, otherwise the provisioning will fail in the next steps. We can use powershell to perform this operation
 > Resize-VHD -Path $LocalImagePath -SizeBytes 32770MB
-3.	Configure some variables to use during the deployment. Change $BlobNameSource and $LocalImagePath to reflect your environment. 
+3.	Login to Azure and Configure some variables to use during the deployment. Change $BlobNameSource and $LocalImagePath to reflect your environment. 
 
 4.	Create a new storage account “osscfme” in the “ossdemo” resource group to deploy the vhd image to.
 
@@ -305,7 +311,7 @@ CloudForms is a first-class citizen on Azure and provides a solid hybrid cloud m
 
 …..
  
-6.	Customize the Azure environment and create the CloudForms vm
+6.	Customize the Azure environment and create the CloudForms vm. Use your public key
 $BlobNameDest = "cfme-azure-5.8.1.5-1.x86_64.vhd"
 $BlobDestinationContainer = "vhds"
 $VMName = "cfme-5.8"
@@ -354,20 +360,20 @@ New-AzureRmVM -ResourceGroupName $ResourceGroupName -Location $Location -VM $Vir
 7.	Navigate into the “cfme” vm from the Azure Portal, and note the IP address.
 
 
-8.	From the Cloud Shell, ssh into the appliance using the SSH key. 
+8.	From the Cloud Shell, ssh into the virtual appliance using the SSH key. 
 
 9.	Switch to root “sudo -s” and enter “appliance_console” command. The Red Hat CloudForms appliance summary screen displays. 
 
 
 10.	Press Enter to manually configure settings. 
  
-11.	Press the number for the item you want to change, and press Enter. The options for your selection are displayed. 
+11.	Press the number for the item you want to change, and press Enter. The options for your selection are displayed. For example configure the time zone (2).
 12.	Follow the prompts to make the changes. 
-13.	Press Enter to accept a setting where applicable. Configure the time zone (2) and quit (20)
+13.	Press Enter to accept a setting where applicable and quit (20)
 14.	Back to the Azure portal. We need to add a new disk for the CloudForms data base.
 
 15.	Use the command fdisk to verify the newly added disk
- 
+
 16.	Run “appliance_console” again, hit enter and choose (5) to configure the database 
 17.	Choose (1) to create a key
 
@@ -380,22 +386,21 @@ New-AzureRmVM -ResourceGroupName $ResourceGroupName -Location $Location -VM $Vir
 
 
 
-21.	Choose (16) to start EVM processes. If it fails, choose () to restart the appliance
+21.	Choose (16) to start EVM processes.
 22.	Once Red Hat CloudForms is installed, you can log in and perform administration tasks. 
-23.	Log in to Red Hat CloudForms for the first time after installing by: 
-24.	Navigate to the URL for the login screen. (https://xx.xx.xx.xx on the virtual machine instance) 
-
-25.	Enter the default credentials (Username: admin | Password: smartvm) for the initial login. 
-26.	Click Login. 
-27.	Navigate to the URL for the login screen. (https://xx.xx.xx.xx on the virtual machine instance) 
-28.	Click Update Password beneath the Username and Password text fields. 
-29.	Enter your current Username and Password in the text fields. 
-30.	Input a new password in the New Password field. 
-31.	Repeat your new password in the Verify Password field. 
-32.	Click Login.
-33.	 To Add an Azure Cloud Provider: 
+23.	Log in to Red Hat CloudForms for the first time after installing: 
+-	Navigate to the URL for the login screen. (https://xx.xx.xx.xx on the virtual machine instance) 
+-	Enter the default credentials (Username: admin | Password: smartvm) for the initial login. 
+-	Click Login. 
+-	Navigate to the URL for the login screen. (https://xx.xx.xx.xx on the virtual machine instance) 
+-	Click Update Password beneath the Username and Password text fields.
+-	Enter your current Username and Password in the text fields. 
+-	Input a new password in the New Password field. 
+-	Repeat your new password in the Verify Password field. 
+-	Click Login.
+24.	 Add an Azure Cloud Provider: 
 -	Navigate to Compute → Clouds → Providers. 
--	Click  (Configuration), then click  (Add a New Cloud Provider). 
+-	Click (Configuration), then click (Add a New Cloud Provider). 
 -	Enter a Name for the provider. 
 -	From the Type list, select Azure. 
 -	Select a region from the Region list. One provider will be created for the selected region. 
@@ -408,9 +413,9 @@ New-AzureRmVM -ResourceGroupName $ResourceGroupName -Location $Location -VM $Vir
 
 
 
-34.	To add OpenShift provider 
+25.	Add OpenShift provider 
 -	Navigate to Compute → Containers → Providers. 
--	Click  (Configuration), then click  (Add Existing Containers Provider).
+-	Click (Configuration), then click  (Add Existing Containers Provider).
 -	Enter a Name for the provider. 
 -	From the Type list, select OpenShift Container Platform. 
 -	Enter the appropriate Zone for the provider. If you do not specify a zone, it is set to default. 
@@ -422,12 +427,12 @@ o	Enter the OpenShift management token in the Token field.
 o	Enter the same token in the Confirm Token field. 
 o	Click Validate to confirm that Red Hat CloudForms can connect to the OpenShift Container Platform provider. 
 
-35.	Explore CloudForms by navigating the left menu to get an idea on the insights and intelligence provided by the solution.
+26.	Explore CloudForms by navigating the left menu to get an idea on the insights and intelligence provided by the solution. CloudForms provides additional modules (compliance, management, reporting…) that won’t be covered by the scope of the lab.
       
 
 
 END THE LAB
-To end the lab, simply delete the resource group openshiftRG from the Azure portal or from the Azure CLI. And delete the created webhook from your git repository.
+To end the lab, simply delete the resource group ossdemo from the Azure portal or from the Azure CLI. And delete the created webhook from your git repository.
 
 $ az group delete ossdemo
 
