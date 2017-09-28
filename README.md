@@ -2,19 +2,33 @@
 
  
 TABLE OF CONTENTS
+
 Objectives and pre-requisites	2
+
 Introduction to openshift	3
+
 EXERCISE-1: Deploy Openshift on azure	4
+
 EXERCISE-2: Create and manage projects	14
+
 EXERCISE-3: Create and manage Applications	17
+
 EXERCISE-4: Configuring automated builds	22
+
 EXERCISE-5: Continuous deployment	24
+
 EXERCISE-6: Mini project: JBOSS EAP application	28
+
 EXERCISE-7: Monitoring oepnshift with azure oms	37
+
 EXERCISE-8: Red Hat Cloud Forms on Azure	42
+
 End the lab	56
+
 References	56
+
 Useful links	56
+
 Redhat and Microsoft partnership	56
 
  
