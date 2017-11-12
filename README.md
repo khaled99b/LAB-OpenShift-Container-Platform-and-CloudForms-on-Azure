@@ -104,15 +104,18 @@ solution at https://github.com/Microsoft/openshift-container-platform.
 2.  From the open terminal, create a new ssh key pair with the name
     "osslab\_rsa" and save it under .ssh directory
 
- ![](./MediaFolder/media/image7.JPG)
- $ ssh-keygen 
+    ![](./MediaFolder/media/image7.JPG)
+ ```bash   
+ $ ssh-keygen
+ ``` 
 
 3.  Use the Azure CLI v2 to create a new resource group to host the lab
     resources
 
- ![](./MediaFolder/media/image8.JPG)
- $ az group create -n ossdemo -l
- \'West Europe\'
+    ![](./MediaFolder/media/image8.JPG)
+```bash
+ $ az group create -n ossdemo -l\'West Europe\'
+ ```
 
 4.  Create a Key Vault and add your *ssh* private key, created in the
     previous step.
@@ -147,8 +150,8 @@ application at run-time.
 ![](./MediaFolder/media/image11.JPG)
 
 
-6.  ![](./MediaFolder/media/image12.JPG)
-    Now, go to the Azure portal and assign the
+![](./MediaFolder/media/image12.JPG)
+6.   Now, go to the Azure portal and assign the
     required permissions to the service principal "osscloudprovider" on
     the resource group "ossdemo".
 
