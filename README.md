@@ -76,6 +76,7 @@ Visual studio to deploy code to OpenShift, directly
 ![](./MediaFolder/media/image3.jpg){width="4.989583333333333in"
 height="3.7465277777777777in"}
 
+
 CHALLENGE-1: Deploy Openshift on azure 
 =======================================
 
@@ -105,6 +106,27 @@ solution at https://github.com/Microsoft/openshift-container-platform.
 
   ![](./MediaFolder/media/image7.JPG)
 ```bash
+var copy = function(target) {
+    var textArea = document.createElement('textarea')
+    textArea.setAttribute('style','width:1px;border:0;opacity:0;')
+    document.body.appendChild(textArea)
+    textArea.value = target.innerHTML
+    textArea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textArea)
+}
+
+var pres = document.querySelectorAll(".comment-body > pre")
+pres.forEach(function(pre){
+  var button = document.createElement("button")
+  button.className = "btn btn-sm"
+  button.innerHTML = "copy"
+  pre.parentNode.insertBefore(button, pre)
+  button.addEventListener('click', function(e){
+    e.preventDefault()
+    copy(pre.childNodes[0])
+  })
+})
 $ ssh-keygen
 ```
 1.  Use the Azure CLI v2 to create a new resource group to host the lab
