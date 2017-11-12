@@ -105,8 +105,7 @@ solution at https://github.com/Microsoft/openshift-container-platform.
     "osslab\_rsa" and save it under .ssh directory
 
   ![](./MediaFolder/media/image7.JPG)
-```bash
-var copy = function(target) {
+  var copy = function(target) {
     var textArea = document.createElement('textarea')
     textArea.setAttribute('style','width:1px;border:0;opacity:0;')
     document.body.appendChild(textArea)
@@ -127,6 +126,7 @@ pres.forEach(function(pre){
     copy(pre.childNodes[0])
   })
 })
+```bash
 $ ssh-keygen
 ```
 1.  Use the Azure CLI v2 to create a new resource group to host the lab
