@@ -30,7 +30,7 @@ OpenShift.org.
 
 To perform the lab using OpenShift.org, follow the steps at
 [https://github.com/Microsoft/openshift-origin](https://github.com/Microsoft/openshift-origina)
-and skip Exercise-1.
+and skip Challenge-1.
 
 [NB]{.underline}: If you want to use your corporate Azure account,
 request a resource group with owner access control from your Azure
@@ -42,7 +42,7 @@ provision the master and compute nodes from RHEL images, pay as you go.
 You will incur extra charges not covered by the Azure free tier. Amount
 varies depending on the number and size of the vm nodes.
 
-The Lab exercises cover:
+The Lab challenges cover:
 
 -   Introduction to OpenShift3
 
@@ -72,10 +72,10 @@ run Red Hat OpenShift on Microsoft Azure and Azure Stack.
 
 OpenShift offers multiple access modes including: developer CLI, admin
 CLI, web console and IDE plugins. Click2cloud is a plugin that allows
-Visual studio to deploy code to OpenShift, directly
-![](./MediaFolder/media/image3.jpg){width="4.989583333333333in"
-height="3.7465277777777777in"}
+Visual studio to deploy code to OpenShift, directly.
 
+![](media/image3.jpg){width="4.989583333333333in"
+height="3.7465277777777777in"}
 
 CHALLENGE-1: Deploy Openshift on azure 
 =======================================
@@ -90,62 +90,41 @@ OpenShift offers another alternative to multiple CaaS (container as a
 service) solutions available on Azure, such as *Azure container service,
 Azure service fabric* and *Pivotal* from *CloudFoundry*...
 
- ![](./MediaFolder/media/image4.png)
+![](media/image4.png){width="4.99375in" height="1.9194444444444445in"}
 
 OpenShift container platform is available as an Azure Resource Manager
 solution at https://github.com/Microsoft/openshift-container-platform.
 
 1.  Login to Azure portal and start a new Bash Cloud shell session.
 
-    ![](./MediaFolder/media/image5.JPG){width="5.015625546806649in"
+    ![](media/image5.JPG){width="5.015625546806649in"
     height="2.6565977690288713in"}
 
 2.  From the open terminal, create a new ssh key pair with the name
     "osslab\_rsa" and save it under .ssh directory
 
-  ![](./MediaFolder/media/image7.JPG)
-  var copy = function(target) {
-    var textArea = document.createElement('textarea')
-    textArea.setAttribute('style','width:1px;border:0;opacity:0;')
-    document.body.appendChild(textArea)
-    textArea.value = target.innerHTML
-    textArea.select()
-    document.execCommand('copy')
-    document.body.removeChild(textArea)
-}
-
-var pres = document.querySelectorAll(".comment-body > pre")
-pres.forEach(function(pre){
-  var button = document.createElement("button")
-  button.className = "btn btn-sm"
-  button.innerHTML = "copy"
-  pre.parentNode.insertBefore(button, pre)
-  button.addEventListener('click', function(e){
-    e.preventDefault()
-    copy(pre.childNodes[0])
-  })
-})
+![](media/image7.JPG)
 ```bash
-$ ssh-keygen
+$ ssh-keygen 
 ```
 1.  Use the Azure CLI v2 to create a new resource group to host the lab
     resources
 
-> ![](./MediaFolder/media/image8.JPG){width="5.0in"
-> height="1.2097222222222221in"}**\$ az group create -n ossdemo -l
-> \'West Europe\'**
-
+![](media/image8.JPG)
+```bash
+$ az group create -n ossdemo -l \'West Europe\'
+```
 1.  Create a Key Vault and add your *ssh* private key, created in the
     previous step.
 
-> ![](./MediaFolder/media/image9.JPG){width="5.0in"
-> height="0.6326388888888889in"}**\$ az keyvault create -n ossKV -g
-> ossdemo -l \'West Europe\' \--enabled-for-template-deployment true**
->
-> ![](./MediaFolder/media/image10.JPG){width="5.0in"
-> height="1.7819444444444446in"}**\$ az keyvault secret set
-> \--vault-name ossKV -n ossSecret \--file \~/.ssh/osslab\_rsa**
-
+![](media/image9.JPG)
+```bash
+$ az keyvault create -n ossKV -g ossdemo -l \'West Europe\'--enabled-for-template-deployment true
+```
+![](media/image10.JPG)
+```bash 
+$ az keyvault secret set --vault-name ossKV -n ossSecret \--file \~/.ssh/osslab\_rsa
+```
 The deployment of OpenShift relies on Ansible scripts that should be
 configured for Azure as the cloud provider. During and
 post-installation, OpenShift requires access to some Azure resources,
@@ -158,33 +137,32 @@ providing the basis for a security principal to represent the
 application at run-time.
 
 1.  Create an Azure Active Directory Service Principal and choose a
-    > different password. Copy the resource group scope from step
-    > number 3.
+    different password. Copy the resource group scope from step
+    number 3.
 
-> **\$ az ad sp create-for-rbac -n openshiftcloudprovider \--password
-> changeMePassword \--role contributor \--scopes
-> /subscriptions/f3a5dfdb-e863-40d9-b23c-752b886c0260/resourceGroups/ossdemo**
+\```bash az ad sp create-for-rbac -n openshiftcloudprovider \--password
+changeMePassword \--role contributor \--scopes
+/subscriptions/f3a5dfdb-e863-40d9-b23c-752b886c0260/resourceGroups/ossdemo
 
-![](./MediaFolder/media/image11.JPG){width="6.757638888888889in"
+![](media/image11.JPG){width="6.757638888888889in"
 height="0.6506944444444445in"}
 
-1.  ![](./MediaFolder/media/image12.JPG){width="5.0in"
-    height="2.65625in"}Now, go to the Azure portal and assign the
-    required permissions to the service principal "osscloudprovider" on
-    the resource group "ossdemo".
+1.  ![](media/image12.JPG){width="5.0in" height="2.65625in"}Now, go to
+    the Azure portal and assign the required permissions to the service
+    principal "osscloudprovider" on the resource group "ossdemo".
 
-![](./MediaFolder/media/image13.JPG){width="5.0in" height="2.65625in"}
+![](media/image13.JPG){width="5.0in" height="2.65625in"}
 
-![](./MediaFolder/media/image14.JPG){width="5.0in" height="2.65625in"}
+![](media/image14.JPG){width="5.0in" height="2.65625in"}
 
 1.  Note the application id of your service principal.
 
-> **\$ az ad sp show \--id http://openshiftcloudprovider**
+\```bash az ad sp show \--id http://openshiftcloudprovider
 
 1.  Use the following Azure resource manager solutions
-    > [template](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fopenshift-container-platform%2Fmaster%2Fazuredeploy.json)
-    > to deploy your OpenShift environment:
-    > <https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fopenshift-container-platform%2Fmaster%2Fazuredeploy.json>
+    [template](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fopenshift-container-platform%2Fmaster%2Fazuredeploy.json)
+    to deploy your OpenShift environment:
+    <https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fopenshift-container-platform%2Fmaster%2Fazuredeploy.json>
 
 -   At this stage we will need Red Hat Network or Red Hat satellite
     credentials to register RHEL vms with RedHat and get access to the
@@ -211,33 +189,29 @@ height="0.6506944444444445in"}
     globally unique. Choose your own names.
 
 ![A screenshot of a cell phone Description generated with very high
-confidence](./MediaFolder/media/image15.JPG){width="5.0in"
+confidence](media/image15.JPG){width="5.0in"
 height="3.388888888888889in"}![A screenshot of a cell phone Description
-generated with very high
-confidence](./MediaFolder/media/image16.JPG){width="5.0in"
+generated with very high confidence](media/image16.JPG){width="5.0in"
 height="3.51875in"}![A screenshot of a cell phone Description generated
-with very high
-confidence](./MediaFolder/media/image17.JPG){width="5.0in"
+with very high confidence](media/image17.JPG){width="5.0in"
 height="3.529861111111111in"}![A screenshot of a cell phone Description
-generated with very high
-confidence](./MediaFolder/media/image18.JPG){width="5.0in"
+generated with very high confidence](media/image18.JPG){width="5.0in"
 height="3.566666666666667in"}![A screenshot of a cell phone Description
-generated with very high
-confidence](./MediaFolder/media/image19.JPG){width="5.0in"
-height="2.567361111111111in"}![](./MediaFolder/media/image15.JPG){width="5.0in"
+generated with very high confidence](media/image19.JPG){width="5.0in"
+height="2.567361111111111in"}![](media/image15.JPG){width="5.0in"
 height="3.388888888888889in"}
 
 1.  From the Azure portal, go to your resource group "ossdemo", track
-    > the progress of the deployment and make sure the deployment
-    > finishes, successfully. The process should last around 20 minutes.
-    > It is a good time to have a break.
+    the progress of the deployment and make sure the deployment
+    finishes, successfully. The process should last around 20 minutes.
+    It is a good time to have a break.
 
-> ![](./MediaFolder/media/image20.png){width="5.000694444444444in"
-> height="2.6534722222222222in"}
+![](media/image20.png){width="5.000694444444444in"
+height="2.6534722222222222in"}
 
-![](./MediaFolder/media/image21.png){width="5.0in"
-height="2.5104166666666665in"}The following diagram explains the
-physical architecture of the deployed cluster.
+![](media/image21.png){width="5.0in" height="2.5104166666666665in"}The
+following diagram explains the physical architecture of the deployed
+cluster.
 
 The bastion server implements mainly two distinct functions. One is that
 of a secure way to connect to all the nodes, and second that of the
@@ -249,14 +223,14 @@ request to the appropriate server.
 The next diagram, explains the role and tasks of the Openshift
 master/agents and the logical architecture of the solution.
 
-> ![](./MediaFolder/media/image22.jpg){width="4.999305555555556in"
-> height="3.209722222222222in"}
+![](media/image22.jpg){width="4.999305555555556in"
+height="3.209722222222222in"}
 
 CHALLENGE -2: Create and manage projects 
 =========================================
 
 There are many ways to launch images within an OpenShift project. In
-this exercise we will focus on the graphical portal.
+this challenge we will focus on the graphical portal.
 
 To create an *application*, you must first create a new *project*, then
 select an *InstantApp* template. From there, OpenShift begins the build
@@ -265,35 +239,32 @@ process, and creates a new deployment.
 1.  Login to your *github* account, or create one if you didn't.
 
 2.  Browse to *openshift/ruby-ex* repository and fork it into your
-    > *github* account
+    *github* account
 
-> ![](./MediaFolder/media/image23.PNG){width="5.0in"
-> height="3.370833333333333in"}
+![](media/image23.PNG){width="5.0in" height="3.370833333333333in"}
 
 1.  From your browser, visit the OpenShift web console at
-    > *https://FQDN-master-node:8443*. The web site, uses a self-signed
-    > certificate, so if prompted, continue and ignore the browser
-    > warning.
+    *https://FQDN-master-node:8443*. The web site, uses a self-signed
+    certificate, so if prompted, continue and ignore the browser
+    warning.
 
 2.  Log in using your username and password.
 
-> ![A screenshot of a cell phone Description generated with high
-> confidence](./MediaFolder/media/image24.JPG){width="5.0in"
-> height="2.65625in"}![A screenshot of a cell phone Description
-> generated with very high
-> confidence](./MediaFolder/media/image25.JPG){width="5.0in"
-> height="2.65625in"}
+![A screenshot of a cell phone Description generated with high
+confidence](media/image24.JPG){width="5.0in" height="2.65625in"}![A
+screenshot of a cell phone Description generated with very high
+confidence](media/image25.JPG){width="5.0in" height="2.65625in"}
 
-1.  To create a new project, click **New Project**.
+1.  To create a new project, click New Project.
 
 2.  Type a unique name, display name, and description for the new
-    > project.
+    project.
 
-3.  Click **Create**. The web console's welcome screen should start
-    > loading.
+3.  Click Create. The web console's welcome screen should start
+    loading.
 
-![](./MediaFolder/media/image26.JPG){width="5.0in"
-height="2.65625in"}![](./MediaFolder/media/image27.JPG){width="5.0in"
+![](media/image26.JPG){width="5.0in"
+height="2.65625in"}![](media/image27.JPG){width="5.0in"
 height="2.65625in"}
 
 CHALLENGE -3: Create and manage Applications
@@ -304,72 +275,69 @@ application to your project from a publicly accessible *Git* repository,
 or from a *template*:
 
 1.  If creating a new project did not automatically redirect you to the
-    *Select Image or Template page*, you might need to click **Add to
-    Project**.
+    *Select Image or Template page*, you might need to click Add to
+    Project.
 
-2.  Click **Browse**, then select
+2.  Click Browse, then select
 
-3.  Click the **ruby:latest** builder image.
+3.  Click the ruby:latest builder image.
 
-> ![A screenshot of a social media post Description generated with very
-> high confidence](./MediaFolder/media/image28.JPG){width="5.0in"
-> height="2.65625in"}
+![A screenshot of a social media post Description generated with very
+high confidence](media/image28.JPG){width="5.0in" height="2.65625in"}
 
-1.  Type a **name** for your application, and specify the git repository
+1.  Type a name for your application, and specify the git repository
     URL you previously forked:
     <https://github.com/%3Cyour_github_username%3E/ruby-ex.git>.
 
-> ![A screenshot of a cell phone Description generated with very high
-> confidence](./MediaFolder/media/image29.JPG){width="5.0in"
-> height="2.65625in"}
+![A screenshot of a cell phone Description generated with very high
+confidence](media/image29.JPG){width="5.0in" height="2.65625in"}
 
-1.  Optionally, click **Show advanced routing, build, and deployment
-    options**. Explore the build configuration and other options and
+1.  Optionally, click Show advanced routing, build, and deployment
+    options. Explore the build configuration and other options and
     note that this example application automatically creates a route,
     *webhook* trigger, and builds change triggers. A *webhook* is an
     HTTP call-back triggered by a specific event.
 
-2.  Click **Create**. Creating your application might take some time.
+2.  Click Create. Creating your application might take some time.
     note the *payload url,* we will use it later to set a *webhook* in
     your *github* repository.
 
-3.  ![](./MediaFolder/media/image30.JPG){width="5.0in"
-    height="2.65625in"}You can follow along on the **Overview** page of
-    the web console to see the new resources being created, and watch
-    the progress of the build and deployment. Click on "view log", you
-    will notice that Openshift is pulling the code of the application
-    from Github and building the layers of the container image that will
-    host the application. Once the build is complete, Openshift will
-    start a new pod.
+3.  ![](media/image30.JPG){width="5.0in" height="2.65625in"}You can
+    follow along on the Overview page of the web console to see the
+    new resources being created, and watch the progress of the build and
+    deployment. Click on "view log", you will notice that Openshift is
+    pulling the code of the application from Github and building the
+    layers of the container image that will host the application. Once
+    the build is complete, Openshift will start a new pod.
 
-> ![](./MediaFolder/media/image31.JPG){width="5.0in" height="2.65625in"}
+![](media/image31.JPG){width="5.0in" height="2.65625in"}
 >
-> OpenShift leverages the Kubernetes concept of a pod, which is one or
-> more containers deployed together on one host. A pod is the smallest
-> compute unit that can be defined, deployed, and managed.
+OpenShift leverages the Kubernetes concept of a pod, which is one or
+more containers deployed together on one host. A pod is the smallest
+compute unit that can be defined, deployed, and managed.
 >
-> Pods are the rough equivalent of a machine instance (physical or
-> virtual) to a container. Each pod is allocated its own internal IP
-> address, therefore owning its entire port space. Containers within
-> pods can share their local storage and networking.
+Pods are the rough equivalent of a machine instance (physical or
+virtual) to a container. Each pod is allocated its own internal IP
+address, therefore owning its entire port space. Containers within
+pods can share their local storage and networking.
 >
-> While the Ruby *pod* is being created, its status is shown as pending.
-> The Ruby *pod* then starts up and displays its newly-assigned IP
-> address. When the Ruby *pod* is running, the build is complete.
+While the Ruby *pod* is being created, its status is shown as pending.
+The Ruby *pod* then starts up and displays its newly-assigned IP
+address. When the Ruby *pod* is running, the build is complete.
 >
-> Pods have a lifecycle; they are defined, then they are assigned to run
-> on a node, then they run until their container(s) exit or they are
-> removed for some other reason. Pods, depending on policy and exit
-> code, may be removed after exiting, or may be retained in order to
-> enable access to the logs of their containers.
+Pods have a lifecycle; they are defined, then they are assigned to run
+on a node, then they run until their container(s) exit or they are
+removed for some other reason. Pods, depending on policy and exit
+code, may be removed after exiting, or may be retained in order to
+enable access to the logs of their containers.
 
-1.  ![](./MediaFolder/media/image32.JPG){width="5.0in"
-    height="2.65625in"}From the overview page, click the web address for
-    the application in the upper right corner. Verify that the web
-    application is up and available.
+1.  ![](media/image32.JPG){width="5.0in" height="2.65625in"}From the
+    overview page, click the web address for the application in the
+    upper right corner. Verify that the web application is up and
+    available.
 
     ![A screenshot of a social media post Description generated with
-    very high confidence](./MediaFolder/media/image33.JPG){width="5.0in"
+    very high confidence](media/image33.JPG){width="5.0in"
     height="2.65625in"}
 
 2.  Return to the *OpenShift* admin console. Browse to the project's
@@ -380,15 +348,13 @@ or from a *template*:
     Scale out the app into 3 pods and watch the progress.
 
     ![A screenshot of a cell phone Description generated with very high
-    confidence](./MediaFolder/media/image34.JPG){width="5.0in"
-    height="2.65625in"}
+    confidence](media/image34.JPG){width="5.0in" height="2.65625in"}
 
-3.  Browse to **Applications** -**\>** **Pods**, and make sure 3 pods
+3.  Browse to Applications -\> Pods, and make sure 3 pods
     serving the same application are now up and running.
 
     ![A screenshot of a computer Description generated with very high
-    confidence](./MediaFolder/media/image35.JPG){width="5.0in"
-    height="2.65625in"}
+    confidence](media/image35.JPG){width="5.0in" height="2.65625in"}
 
 CHALLENGE -4: Configuring automated builds
 ==========================================
@@ -403,30 +369,28 @@ To set up a *webhook* for your application:
 1.  From the Web Console, navigate to the project containing your
     application.
 
-2.  Click the **Browse** tab, then click **Builds**.
+2.  Click the Browse tab, then click Builds.
 
-3.  Click your build name, then click the **Configuration** tab.
+3.  Click your build name, then click the Configuration tab.
 
-4.  Click next to **GitHub webhook URL** to copy your *webhook* payload
+4.  Click next to GitHub webhook URL to copy your *webhook* payload
     URL.
 
-> ![A screenshot of a cell phone Description generated with very high
-> confidence](./MediaFolder/media/image36.JPG){width="5.0in"
-> height="2.65625in"}
+![A screenshot of a cell phone Description generated with very high
+confidence](media/image36.JPG){width="5.0in" height="2.65625in"}
 
 1.  Navigate to your forked repository on GitHub, then click
-    **Settings**.
+    Settings.
 
-2.  Click **Webhooks & Services** and Click **Add webhook**.
+2.  Click Webhooks & Services and Click Add webhook.
 
-![](./MediaFolder/media/image37.PNG){width="5.0in"
-height="2.4145833333333333in"}
+![](media/image37.PNG){width="5.0in" height="2.4145833333333333in"}
 
-1.  Paste your *webhook* URL into the **Payload URL** field.
+1.  Paste your *webhook* URL into the Payload URL field.
 
 2.  As Content Type choose application/json
 
-3.  Disable SSL verification and click **Add webhook** to save.
+3.  Disable SSL verification and click Add webhook to save.
 
 GitHub will now attempt to send a ping payload to your *OpenShift*
 server to ensure that communication is successful. If you see a green
@@ -437,8 +401,7 @@ Hover your mouse over the check mark to see the status of the last
 delivery.
 
 ![A screenshot of a social media post Description generated with very
-high confidence](./MediaFolder/media/image38.JPG){width="5.0in"
-height="2.65625in"}
+high confidence](media/image38.JPG){width="5.0in" height="2.65625in"}
 
 Next time you push a code change to your forked repository, your
 application will automatically rebuild.
@@ -453,58 +416,58 @@ pipeline, just by committing code change to Github.
 Once there is a code change, the Github *webhook* will trigger the build
 of a new container image that combines a blueprint image from the
 registry with the updated code and generate a new image. This feature is
-called ***S2I***, or source to image. Once the build finishes,
+called *S2I*, or source to image. Once the build finishes,
 *OpenShift* will automatically deploy the new application based on the
 new image. This capability enables multiple deployment strategies such
 as A/B testing, Rolling upgrades...
 
 []{#_Toc471628252
-.anchor}![](./MediaFolder/media/image39.png){width="4.995555555555556in"
+.anchor}![](media/image39.png){width="4.995555555555556in"
 height="2.81in"} Figure 21: Continuous deployment pipeline
 
 1.  Use Azure cloud shell or install *Git* into your local machine
 
-> PS: If you don't want to use *git*, you still can perform this
-> exercise by moving to step-5 and editing the file *config.ru*,
-> directly from the web interface of *github* and then go to step-7.
+PS: If you don't want to use *git*, you still can perform this
+challenge by moving to step-5 and editing the file *config.ru*,
+directly from the web interface of *github* and then go to step-7.
 >
-> Create a "dev" folder and change into.
+Create a "dev" folder and change into.
 >
-> **\$ mkdir dev && cd dev**
+\```bash mkdir dev && cd dev
 
 1.  Clone the forked repository to your local system
 
-> **\$ git clone https://github.com/\<YourGithubUsername\>/ruby-ex.git**
+\```bash git clone https://github.com/\<YourGithubUsername\>/ruby-ex.git
 
 1.  Make sure your local *git* repository is referencing to your
     *ruby-ex git*, on *github*:
 
-> **\$ cd ruby-ex**
+\```bash cd ruby-ex
 >
-> **\$ git remote -v**
+\```bash git remote -v
 
 1.  On your local machine, use your preferred text editor to change the
-    sample application's source for the file ***config.ru***
+    sample application's source for the file *config.ru*
 
-> Make a code change that will be visible from within your application.
-> For example: on line 229, change the title to "Welcome to your Ruby
-> application on OpenShift POWERED BY AZURE!", then save your changes.
+Make a code change that will be visible from within your application.
+For example: on line 229, change the title to "Welcome to your Ruby
+application on OpenShift POWERED BY AZURE!", then save your changes.
 
 1.  Verify the working tree status
 
-> **\$ git status**
+\```bash git status
 
 1.  Add config.ru content to the index, Commit the change in *git*, and
     push the change to your fork. You will need to authenticate with
     your *github* credentials
 
-> **\$ git add config.ru**
+\```bash git add config.ru
 >
-> **\$ git commit -m \"simple message\"  **
+\```bash git commit -m \"simple message\"  
 >
-> **\$ git status**
+\```bash git status
 >
-> **\$ git push**
+\```bash git push
 
 1.  If your *webhook* is correctly configured, your application will
     immediately rebuild itself, based on your changes. Monitor the build
@@ -514,17 +477,14 @@ height="2.81in"} Figure 21: Continuous deployment pipeline
     OpenShift handles the rest.
 
 ![A screenshot of a cell phone Description generated with very high
-confidence](./MediaFolder/media/image40.JPG){width="5.0in"
-height="2.65625in"}![A screenshot of a cell phone Description generated
-with very high
-confidence](./MediaFolder/media/image41.JPG){width="5.0in"
-height="2.65625in"}
+confidence](media/image40.JPG){width="5.0in" height="2.65625in"}![A
+screenshot of a cell phone Description generated with very high
+confidence](media/image41.JPG){width="5.0in" height="2.65625in"}
 
 1.  From the web browser refresh the page and note the new change
 
 ![A screenshot of a social media post Description generated with very
-high confidence](./MediaFolder/media/image42.JPG){width="5.0in"
-height="2.65625in"}
+high confidence](media/image42.JPG){width="5.0in" height="2.65625in"}
 
 1.  You may find it useful to manually rebuild an image if your
     *webhook* is not working, or if a build fails and you do not want to
@@ -532,12 +492,12 @@ height="2.65625in"}
     image based on your latest committed change to your forked
     repository:
 
-    a.  Click the **Browse** tab, then click **Builds**.
+    a.  Click the Browse tab, then click Builds.
 
-    b.  Find your build, then click **Start Build**.
+    b.  Find your build, then click Start Build.
 
-**\
-**
+\
+
 
 CHALLENGE -6: Mini project: JBOSS EAP application
 =================================================
@@ -548,7 +508,7 @@ end. The application, allows to visualize the locations of major
 National Parks and Historic Sites
 (https://github.com/OpenShiftDemos/restify-mongodb-parks).
 
-During this exercise, we will leverage the CLI tool of OpenShift.
+During this challenge, we will leverage the CLI tool of OpenShift.
 
 1.  Download and install the OpenShift CLI related to your operating
     system. The easiest way to download the CLI is by accessing the
@@ -556,104 +516,93 @@ During this exercise, we will leverage the CLI tool of OpenShift.
     enabled the download links. Another alternative is to ssh into your
     bastion host that has the CLI tool installed already.
 
-    ![](./MediaFolder/media/image43.JPG){width="5.0in"
-    height="2.65625in"}
+    ![](media/image43.JPG){width="5.0in" height="2.65625in"}
 
-2.  ![](./MediaFolder/media/image44.JPG){width="5.0in"
-    height="2.15in"}Use your openshift url endpoint to login to your
-    environment from the CLI
+2.  ![](media/image44.JPG){width="5.0in" height="2.15in"}Use your
+    openshift url endpoint to login to your environment from the CLI
 
-3.  ![](./MediaFolder/media/image45.JPG){width="5.0in"
+3.  ![](media/image45.JPG){width="5.0in"
     height="1.1229166666666666in"}Create a new project "nationalparks"
 
 4.  From the web console, add a new Java application using the following
     git lab repository <https://gitlab.com/gshipley/nationalparks.git>
 
-    ![](./MediaFolder/media/image46.JPG){width="5.0in"
-    height="2.65625in"}
+    ![](media/image46.JPG){width="5.0in" height="2.65625in"}
 
-    ![](./MediaFolder/media/image47.JPG){width="5.0in"
-    height="2.65625in"}
+    ![](media/image47.JPG){width="5.0in" height="2.65625in"}
 
 5.  List builds operations:
 
-    ![](./MediaFolder/media/image48.JPG){width="5.0in"
-    height="0.6944444444444444in"}
+    ![](media/image48.JPG){width="5.0in" height="0.6944444444444444in"}
 
 6.  List existing projects, pods and view logs in real time:
 
-    ![](./MediaFolder/media/image49.JPG){width="4.427083333333333in"
+    ![](media/image49.JPG){width="4.427083333333333in"
     height="2.6302088801399823in"}![A screenshot of a cell phone screen
     with text Description generated with very high
-    confidence](./MediaFolder/media/image50.JPG){width="5.0in"
+    confidence](media/image50.JPG){width="5.0in"
     height="2.2472222222222222in"}![A screenshot of a cell phone
     Description generated with very high
-    confidence](./MediaFolder/media/image51.JPG){width="5.0in"
+    confidence](media/image51.JPG){width="5.0in"
     height="2.209722222222222in"}
 
     Output truncated ....
 
-    ![](./MediaFolder/media/image52.JPG){width="5.0in"
-    height="2.2472222222222222in"}
+    ![](media/image52.JPG){width="5.0in" height="2.2472222222222222in"}
 
 7.  []{#_Toc473582984 .anchor}Browse the newly created application and
     verify it is available
 
-    ![](./MediaFolder/media/image53.JPG){width="5.0in"
-    height="2.65625in"}![](./MediaFolder/media/image54.JPG){width="5.0in"
+    ![](media/image53.JPG){width="5.0in"
+    height="2.65625in"}![](media/image54.JPG){width="5.0in"
     height="2.65625in"}
 
-8.  ![](./MediaFolder/media/image55.JPG){width="5.0in"
-    height="3.736111111111111in"}![](./MediaFolder/media/image56.JPG){width="5.0in"
+8.  ![](media/image55.JPG){width="5.0in"
+    height="3.736111111111111in"}![](media/image56.JPG){width="5.0in"
     height="2.65625in"}We can see the map but not the attraction points.
     The reason is that we only deployed the front-end application. What
     we will need now is to add a backend data base. From the web
     console, add a new persistent mongodb data store. And set the needed
     environment variables and specification as bellow:
 
-    ![](./MediaFolder/media/image57.JPG){width="5.0in"
-    height="3.326388888888889in"}
+    ![](media/image57.JPG){width="5.0in" height="3.326388888888889in"}
 
 9.  The graphical portal should show two applications in our project
 
-    ![](./MediaFolder/media/image58.JPG){width="5.0in"
-    height="2.65625in"}
+    ![](media/image58.JPG){width="5.0in" height="2.65625in"}
 
 10. From the left menu in the web console, click on storage and verify
     that OpenShift created a persistent storage volume using Azure
     storage.
 
     ![A screenshot of a computer Description generated with very high
-    confidence](./MediaFolder/media/image59.JPG){width="5.0in"
-    height="2.65625in"}
+    confidence](media/image59.JPG){width="5.0in" height="2.65625in"}
 
-11. ![](./MediaFolder/media/image60.JPG){width="5.0in"
+11. ![](media/image60.JPG){width="5.0in"
     height="0.9381944444444444in"}Change the deployment configuration of
     the front-end application to include the environment variables
     required to access the database
 
 12. verify the last modification took place by running "oc get dc
 
-    ![](./MediaFolder/media/image61.JPG){width="5.0in"
+    ![](media/image61.JPG){width="5.0in"
     height="2.9659722222222222in"}nationalparklocator -o json"
 
 13. Back to the graphical console, note the automatic migration to a new
     pod based on the new configuration
 
-    ![](./MediaFolder/media/image62.JPG){width="5.0in"
-    height="2.65625in"}
+    ![](media/image62.JPG){width="5.0in" height="2.65625in"}
 
-14. ![](./MediaFolder/media/image63.JPG){width="5.0in"
-    height="2.65625in"}Navigate to the application end-point and verify
-    that the parks are now showing on the map
+14. ![](media/image63.JPG){width="5.0in" height="2.65625in"}Navigate to
+    the application end-point and verify that the parks are now showing
+    on the map
 
 15. Our new application became very popular, and we need to scale out
     our front end to two pods. Use "oc scale" to do it
 
-    ![](./MediaFolder/media/image64.JPG){width="5.0in"
-    height="1.65625in"}
+    ![](media/image64.JPG){width="5.0in" height="1.65625in"}
 
-16. ![](./MediaFolder/media/image65.JPG){width="5.0in"
+16. ![](media/image65.JPG){width="5.0in"
     height="2.517361111111111in"}Now, let's test the self-healing,
     capabilities of OpenShift by deleting one of the running pods.
     Because, the desired state of the replication controller is 2 pods
@@ -664,38 +613,36 @@ CHALLENGE -7: Monitoring oepnshift with azure oms
 =================================================
 
 Azure Operations Management Suite (OMS) provides native support to
-OpenShift. In this exercise, we will walk through the steps of
+OpenShift. In this challenge, we will walk through the steps of
 configuring OpenShift to export monitoring metrics directly to OMS.
 
-1.  ![](./MediaFolder/media/image66.JPG){width="4.8902777777777775in"
+1.  ![](media/image66.JPG){width="4.8902777777777775in"
     height="6.28125in"}From the Azure portal create a new OMS workspace
 
-2.  ![](./MediaFolder/media/image67.JPG){width="5.0in"
-    height="2.33125in"}Open the OMS portal and note the workspace id and
-    one of the primary keys.
+2.  ![](media/image67.JPG){width="5.0in" height="2.33125in"}Open the OMS
+    portal and note the workspace id and one of the primary keys.
 
-    ![](./MediaFolder/media/image68.JPG){width="5.0in"
-    height="2.3118055555555554in"}
+    ![](media/image68.JPG){width="5.0in" height="2.3118055555555554in"}
 
 3.  From Cloud Shell ssh into the bastion host, then ssh into one of the
     master node and create an OpenShift project and user account for
     OMS.
 
-> **\[ossadmin@oss-bastion \~\]\$** ssh oss-master-0
+\[ossadmin@oss-bastion \~\]\```bash ssh oss-master-0
 >
-> **\[ossadmin@oss-master-0 \~\]\$** oadm new-project omslogging
-> \--node-selector=\'zone=default\'
+\[ossadmin@oss-master-0 \~\]\```bash oadm new-project omslogging
+\--node-selector=\'zone=default\'
 >
-> **\[ossadmin@oss-master-0 \~\]\$** oc project omslogging
+\[ossadmin@oss-master-0 \~\]\```bash oc project omslogging
 >
-> **\[ossadmin@oss-master-0 \~\]\$** oc create serviceaccount omsagent
+\[ossadmin@oss-master-0 \~\]\```bash oc create serviceaccount omsagent
 >
-> **\[ossadmin@oss-master-0 \~\]\$** oadm policy
-> add-cluster-role-to-user cluster-reader
-> system:serviceaccount:omslogging:omsagent
+\[ossadmin@oss-master-0 \~\]\```bash oadm policy
+add-cluster-role-to-user cluster-reader
+system:serviceaccount:omslogging:omsagent
 >
-> **\[ossadmin@oss-master-0 \~\]\$** oadm policy add-scc-to-user
-> privileged system:serviceaccount:omslogging:omsagent
+\[ossadmin@oss-master-0 \~\]\```bash oadm policy add-scc-to-user
+privileged system:serviceaccount:omslogging:omsagent
 
 2.  Use wget to download the ocp-\* files from
     <https://github.com/Microsoft/OMS-docker/tree/master/OpenShift>
@@ -703,38 +650,35 @@ configuring OpenShift to export monitoring metrics directly to OMS.
 3.  Make the file "secretgen.sh" executable. Run it, and provide our
     workspace id and key.
 
-> **\[ossadmin@oss-master-0 \~\]\$** chmod +x secretgen.sh
+\[ossadmin@oss-master-0 \~\]\```bash chmod +x secretgen.sh
 >
-> **\[ossadmin@oss-master-0 \~\]\$** ./secretgen.sh
+\[ossadmin@oss-master-0 \~\]\```bash ./secretgen.sh
 
 2.  Create an OMS daemon set. A DaemonSet ensures that all the openshift
     cluster nodes run a copy of the oms pod.
 
-> **\[ossadmin@oss-master-0 \~\]\$** oc create -f ocp-secret.yaml
+\[ossadmin@oss-master-0 \~\]\```bash oc create -f ocp-secret.yaml
 
 2.  Validate that the daemon set is working properly
 
 ![A screenshot of a cell phone Description generated with very high
-confidence](./MediaFolder/media/image69.JPG){width="5.0in"
+confidence](media/image69.JPG){width="5.0in"
 height="2.3986111111111112in"}
 
 2.  Back to OMS portal, you will find that there are new data sources
     exporting metrics.
 
-    ![](./MediaFolder/media/image70.JPG){width="5.0in"
-    height="2.65625in"}
+    ![](media/image70.JPG){width="5.0in" height="2.65625in"}
 
 3.  Create your custom dashboard and start exploring the data exported
     by OpenShift under different visualization formats
 
-    ![](./MediaFolder/media/image71.JPG){width="5.0in"
-    height="2.65625in"}
+    ![](media/image71.JPG){width="5.0in" height="2.65625in"}
 
-    ![](./MediaFolder/media/image72.JPG){width="5.0in"
-    height="2.65625in"}
+    ![](media/image72.JPG){width="5.0in" height="2.65625in"}
 
-![](./MediaFolder/media/image73.JPG){width="5.0in"
-height="2.65625in"}![](./MediaFolder/media/image74.JPG){width="5.0in"
+![](media/image73.JPG){width="5.0in"
+height="2.65625in"}![](media/image74.JPG){width="5.0in"
 height="2.65625in"}
 
 CHALLENGE -8: Red Hat Cloud Forms on Azure
@@ -757,8 +701,8 @@ CloudForms can see and manage both the guest and host systems, allowing
 management of workloads and infrastructure within the same system.
 
 CloudForms is a first-class citizen on Azure and provides a solid hybrid
-cloud management solution. During this exercise we will walk through the
-installation and configuration of CloudFroms on Azure and the
+cloud management solution. During this challenge we will walk through
+the installation and configuration of CloudFroms on Azure and the
 integration with the OpenShift environment created in the previous
 steps. In this section we will leverage another powerful open source SDK
 to perform the steps: Powershell.
@@ -771,156 +715,148 @@ to perform the steps: Powershell.
     number of MB, otherwise the provisioning will fail in the next
     steps. We can use powershell to perform this operation
 
-> **\> Resize-VHD -Path \$LocalImagePath -SizeBytes 32770MB**
+\Resize-VHD -Path \```bashLocalImagePath -SizeBytes 32770MB
 
-1.  ![](./MediaFolder/media/image75.JPG){width="5.0in"
+1.  ![](media/image75.JPG){width="5.0in"
     height="2.2729166666666667in"}Login to Azure and Configure some
-    variables to use during the deployment. Change \$BlobNameSource and
-    \$LocalImagePath to reflect your environment.
+    variables to use during the deployment. Change \```bashBlobNameSource and
+    \```bashLocalImagePath to reflect your environment.
 
 2.  Create a new storage account "osscfme" in the "ossdemo" resource
     group to deploy the vhd image to.
 
-    ![](./MediaFolder/media/image76.JPG){width="5.0in"
-    height="5.940972222222222in"}
+    ![](media/image76.JPG){width="5.0in" height="5.940972222222222in"}
 
 3.  Upload the vhd image into the newly created storage account. This
     operation will take 15 minutes. Time for a break!
 
-**\> Add-AzureRmVhd -ResourceGroupName \$ResourceGroupName -Destination
-https://\$StorageAccountName.blob.core.windows.net/\$BlobSourceContainer/\$BlobNameSource
--LocalFilePath \$LocalImagePath -NumberOfUploaderThreads 8**
+\Add-AzureRmVhd -ResourceGroupName \```bashResourceGroupName -Destination
+https://\```bashStorageAccountName.blob.core.windows.net/\```bashBlobSourceContainer/\```bashBlobNameSource
+-LocalFilePath \```bashLocalImagePath -NumberOfUploaderThreads 8
 
-![](./MediaFolder/media/image77.JPG){width="5.0in"
-height="0.8923611111111112in"}
+![](media/image77.JPG){width="5.0in" height="0.8923611111111112in"}
 
 .....
 
 ![A screenshot of a cell phone Description generated with high
-confidence](./MediaFolder/media/image78.JPG){width="5.0in"
+confidence](media/image78.JPG){width="5.0in"
 height="1.2173611111111111in"}
 
 1.  Customize the Azure environment and create the CloudForms vm. Use
     your public key
 
-**\$BlobNameDest = \"cfme-azure-5.8.1.5-1.x86\_64.vhd\"**
+\```bashBlobNameDest = \"cfme-azure-5.8.1.5-1.x86\_64.vhd\"
 
-**\$BlobDestinationContainer = \"vhds\"**
+\```bashBlobDestinationContainer = \"vhds\"
 
-**\$VMName = \"cfme-5.8\"**
+\```bashVMName = \"cfme-5.8\"
 
-**\$DeploySize= \"Standard\_DS4\_V2\"**
+\```bashDeploySize= \"Standard\_DS4\_V2\"
 
-**\$vmUserName = \"ossadmin\"**
+\```bashvmUserName = \"ossadmin\"
 
-**\$InterfaceName = \"cfmenic\"**
+\```bashInterfaceName = \"cfmenic\"
 
-**\$VNetName = \"openshiftvnet\"**
+\```bashVNetName = \"openshiftvnet\"
 
-**\$PublicIPName = \"cfme-public-ip\"**
+\```bashPublicIPName = \"cfme-public-ip\"
 
-**\$SSHKey = \"** **ssh-rsa
+\```bashSSHKey = \" ssh-rsa
 AAAAB3NzaC1yc2EAAAADAQABAAABAQDQOd6tNwPPYBQ+wveI+dmBmdpmaBB87qOG/dHe/ZEFJIXLDRILytVh2kevgeXn/SzbqL3DJ4qQWVGmsaZwELhlQKdcc/AybwRn9tQ94H2WgPQ79RnRd8BRgdu5sVWTpyGZc5OFdAyFvkIftiasHAg3jb7u6oJ7f3HCH4tax/sbdqhSkTnivH4Uxq0Vx1DQOt1z4WfbCYxmG9cLc2zNzqc6/d7Y/g33iW94FZ5CCPfUoY+HdyOSu5cy/rWtreCskWQZwNR8xkvDOKIlc2bnBTCosN79FMzZYyiOcvMIJbtE9KYH9G49G6p2tXDByhOQVj/4aIgRc2S5SW+l6e7VSn7l
-khaled@khbadri\"**
+khaled@khbadri\"
 
-**\$StorageAccount = Get-AzureRmStorageAccount -ResourceGroup
-\$ResourceGroupName -Name \$StorageAccountName**
+\```bashStorageAccount = Get-AzureRmStorageAccount -ResourceGroup
+\```bashResourceGroupName -Name \```bashStorageAccountName
 
-**\$SourceImageUri =
-\"https://\$StorageAccountName.blob.core.windows.net/templates/\$BlobNameSource\"**
+\```bashSourceImageUri =
+\"https://\```bashStorageAccountName.blob.core.windows.net/templates/\```bashBlobNameSource\"
 
-**\$Location = \$StorageAccount.Location**
+\```bashLocation = \```bashStorageAccount.Location
 
-**\$OSDiskName = \$VMName**
+\```bashOSDiskName = \```bashVMName
 
-**\# Network**
+\# Network
 
-**\$PIp = New-AzureRmPublicIpAddress -Name \$PublicIPName
--ResourceGroupName \$ResourceGroupName -Location \$Location
--AllocationMethod Dynamic -Force**
+\```bashPIp = New-AzureRmPublicIpAddress -Name \```bashPublicIPName
+-ResourceGroupName \```bashResourceGroupName -Location \```bashLocation
+-AllocationMethod Dynamic -Force
 
-**\$VNet = Get-AzureRmVirtualNetwork -Name openshiftVnet
--ResourceGroupName ossdemo **
+\```bashVNet = Get-AzureRmVirtualNetwork -Name openshiftVnet
+-ResourceGroupName ossdemo 
 
-**\$Interface = New-AzureRmNetworkInterface -Name \$InterfaceName
--ResourceGroupName \$ResourceGroupName -Location \$Location -SubnetId
-\$VNet.Subnets\[1\].Id -PublicIpAddressId \$PIp.Id -Force**
+\```bashInterface = New-AzureRmNetworkInterface -Name \```bashInterfaceName
+-ResourceGroupName \```bashResourceGroupName -Location \```bashLocation -SubnetId
+\```bashVNet.Subnets\[1\].Id -PublicIpAddressId \```bashPIp.Id -Force
 
-**\# Specify the VM Name and Size**
+\# Specify the VM Name and Size
 
-**\$VirtualMachine = New-AzureRmVMConfig -VMName \$VMName -VMSize
-\$DeploySize**
+\```bashVirtualMachine = New-AzureRmVMConfig -VMName \```bashVMName -VMSize
+\```bashDeploySize
 
-**\# Add User**
+\# Add User
 
-**\$cred = Get-Credential -UserName \$VMUserName -Message \"Setting user
-credential - use blank password\"**
+\```bashcred = Get-Credential -UserName \```bashVMUserName -Message \"Setting user
+credential - use blank password\"
 
-**\$VirtualMachine = Set-AzureRmVMOperatingSystem -VM \$VirtualMachine
--Linux -ComputerName \$VMName -Credential \$cred**
+\```bashVirtualMachine = Set-AzureRmVMOperatingSystem -VM \```bashVirtualMachine
+-Linux -ComputerName \```bashVMName -Credential \```bashcred
 
-**\# Add NIC**
+\# Add NIC
 
-**\$VirtualMachine = Add-AzureRmVMNetworkInterface -VM \$VirtualMachine
--Id \$Interface.Id**
+\```bashVirtualMachine = Add-AzureRmVMNetworkInterface -VM \```bashVirtualMachine
+-Id \```bashInterface.Id
 
-**\# Add Disk**
+\# Add Disk
 
-**\$OSDiskUri = \$StorageAccount.PrimaryEndpoints.Blob.ToString() +
-\$BlobDestinationContainer + \"/\" + \$BlobNameDest**
+\```bashOSDiskUri = \```bashStorageAccount.PrimaryEndpoints.Blob.ToString() +
+\```bashBlobDestinationContainer + \"/\" + \```bashBlobNameDest
 
-**\$VirtualMachine = Set-AzureRmVMOSDisk -VM \$VirtualMachine -Name
-\$OSDiskName -VhdUri \$OSDiskUri -CreateOption fromImage -SourceImageUri
-\$SourceImageUri -Linux**
+\```bashVirtualMachine = Set-AzureRmVMOSDisk -VM \```bashVirtualMachine -Name
+\```bashOSDiskName -VhdUri \```bashOSDiskUri -CreateOption fromImage -SourceImageUri
+\```bashSourceImageUri -Linux
 
-**\# Set SSH key**
+\# Set SSH key
 
-**Add-AzureRmVMSshPublicKey -VM \$VirtualMachine -Path
-"/home/\$VMUserName/.ssh/authorized\_keys" -KeyData \$SSHKey**
+Add-AzureRmVMSshPublicKey -VM \```bashVirtualMachine -Path
+"/home/\```bashVMUserName/.ssh/authorized\_keys" -KeyData \```bashSSHKey
 
-**\# Create the VM**
+\# Create the VM
 
-**New-AzureRmVM -ResourceGroupName \$ResourceGroupName -Location
-\$Location -VM \$VirtualMachine**
+New-AzureRmVM -ResourceGroupName \```bashResourceGroupName -Location
+\```bashLocation -VM \```bashVirtualMachine
 
 ![A screenshot of a cell phone Description generated with high
-confidence](./MediaFolder/media/image79.JPG){width="5.0in"
+confidence](media/image79.JPG){width="5.0in"
 height="1.3868055555555556in"}![A close up of a logo Description
-generated with high
-confidence](./MediaFolder/media/image80.JPG){width="5.0in"
+generated with high confidence](media/image80.JPG){width="5.0in"
 height="0.27708333333333335in"}![A close up of a logo Description
-generated with high
-confidence](./MediaFolder/media/image81.JPG){width="5.0in"
+generated with high confidence](media/image81.JPG){width="5.0in"
 height="0.18263888888888888in"}![A picture containing device Description
-generated with very high
-confidence](./MediaFolder/media/image82.JPG){width="5.0in"
+generated with very high confidence](media/image82.JPG){width="5.0in"
 height="0.22847222222222222in"}![A screenshot of a cell phone
 Description generated with high
-confidence](./MediaFolder/media/image83.JPG){width="5.0in"
+confidence](media/image83.JPG){width="5.0in"
 height="1.382638888888889in"}
 
 1.  Navigate into the "cfme" vm from the Azure Portal, and note the IP
     address.
 
-    ![](./MediaFolder/media/image84.JPG){width="5.0in"
-    height="2.65625in"}
+    ![](media/image84.JPG){width="5.0in" height="2.65625in"}
 
 2.  From the Cloud Shell, ssh into the virtual appliance using the SSH
     key.
 
-    ![](./MediaFolder/media/image85.JPG){width="5.0in"
-    height="1.6111111111111112in"}
+    ![](media/image85.JPG){width="5.0in" height="1.6111111111111112in"}
 
 3.  Switch to root "sudo -s" and enter "appliance\_console" command. The
     Red Hat CloudForms appliance summary screen displays.
 
-    ![](./MediaFolder/media/image86.JPG){width="5.0in"
-    height="3.326388888888889in"}
+    ![](media/image86.JPG){width="5.0in" height="3.326388888888889in"}
 
 4.  Press Enter to manually configure settings.
 
     ![A screenshot of a cell phone Description generated with very high
-    confidence](./MediaFolder/media/image87.JPG){width="5.0in"
+    confidence](media/image87.JPG){width="5.0in"
     height="3.326388888888889in"}
 
 5.  Press the number for the item you want to change, and press Enter.
@@ -934,43 +870,40 @@ height="1.382638888888889in"}
 8.  Back to the Azure portal. We need to add a new disk for the
     CloudForms data base.
 
-    ![](./MediaFolder/media/image88.JPG){width="5.0in"
-    height="2.65625in"}![](./MediaFolder/media/image89.JPG){width="5.0in"
-    height="2.65625in"}![](./MediaFolder/media/image90.JPG){width="5.0in"
+    ![](media/image88.JPG){width="5.0in"
+    height="2.65625in"}![](media/image89.JPG){width="5.0in"
+    height="2.65625in"}![](media/image90.JPG){width="5.0in"
     height="2.65625in"}
 
 9.  Use the command fdisk to verify the newly added disk
 
-    ![](./MediaFolder/media/image91.JPG){width="5.0in"
-    height="1.1340277777777779in"}
+    ![](media/image91.JPG){width="5.0in" height="1.1340277777777779in"}
 
 10. Run "appliance\_console" again, hit enter and choose (5) to
     configure the database
 
-11. ![](./MediaFolder/media/image92.JPG){width="5.0in"
+11. ![](media/image92.JPG){width="5.0in"
     height="2.0076388888888888in"}Choose (1) to create a key
 
 12. Choose (1) to create internal database for the database location.
 
-    ![](./MediaFolder/media/image93.JPG){width="5.0in"
-    height="2.0076388888888888in"}
+    ![](media/image93.JPG){width="5.0in" height="2.0076388888888888in"}
 
-13. ![](./MediaFolder/media/image94.JPG){width="5.0in"
-    height="1.1125in"}Choose (1) for the disk we attached previously
+13. ![](media/image94.JPG){width="5.0in" height="1.1125in"}Choose (1)
+    for the disk we attached previously
 
 14. Select Y to configure the appliance as a database-only appliance and
     create and confirm a password for the database. As a result, the
     appliance is configured as a basic PostgreSQL server, without a user
     interface
 
-    ![](./MediaFolder/media/image95.JPG){width="5.0in"
-    height="1.1125in"}
+    ![](media/image95.JPG){width="5.0in" height="1.1125in"}
 
 15. Choose (16) to start EVM processes.
 
-16. ![](./MediaFolder/media/image96.JPG){width="5.0in"
-    height="2.65625in"}Once Red Hat CloudForms is installed, you can log
-    in and perform administration tasks.
+16. ![](media/image96.JPG){width="5.0in" height="2.65625in"}Once Red Hat
+    CloudForms is installed, you can log in and perform administration
+    tasks.
 
 17. Log in to Red Hat CloudForms for the first time after installing:
 
@@ -1017,11 +950,9 @@ height="1.382638888888889in"}
 -   In the Credentials section, enter the Client ID and Client Key;
     click Validate.
 
--   ![](./MediaFolder/media/image97.JPG){width="5.0in"
-    height="2.65625in"}Click Add.
+-   ![](media/image97.JPG){width="5.0in" height="2.65625in"}Click Add.
 
-    ![](./MediaFolder/media/image98.JPG){width="5.0in"
-    height="2.65625in"}
+    ![](media/image98.JPG){width="5.0in" height="2.65625in"}
 
 1.  Add OpenShift provider
 
@@ -1046,7 +977,7 @@ height="1.382638888888889in"}
     -   Enter the Hostname or IPv4 of your OpenShift environment and
         keep default port
 
-    -   ![](./MediaFolder/media/image99.JPG){width="5.0in"
+    -   ![](media/image99.JPG){width="5.0in"
         height="0.5472222222222223in"}Run the following to obtain the
         token needed to add an OpenShift Container Platform
 
@@ -1054,10 +985,9 @@ height="1.382638888888889in"}
 
     -   Enter the same token in the Confirm Token field.
 
-    -   ![](./MediaFolder/media/image100.JPG){width="5.0in"
-        height="2.65625in"}Click Validate to confirm that Red Hat
-        CloudForms can connect to the OpenShift Container Platform
-        provider.
+    -   ![](media/image100.JPG){width="5.0in" height="2.65625in"}Click
+        Validate to confirm that Red Hat CloudForms can connect to the
+        OpenShift Container Platform provider.
 
 1.  Explore CloudForms by navigating the left menu to get an idea on the
     insights and intelligence provided by the solution. CloudForms
@@ -1065,23 +995,17 @@ height="1.382638888888889in"}
     that won't be covered by the scope of the lab.
 
     ![A screenshot of a cell phone Description generated with very high
-    confidence](./MediaFolder/media/image101.JPG){width="5.0in"
-    height="2.65625in"}![A screenshot of a computer Description
-    generated with very high
-    confidence](./MediaFolder/media/image98.JPG){width="5.0in"
-    height="2.65625in"}![A screenshot of a computer Description
-    generated with very high
-    confidence](./MediaFolder/media/image102.JPG){width="5.0in"
-    height="2.65625in"}![A screenshot of a computer Description
-    generated with very high
-    confidence](./MediaFolder/media/image103.JPG){width="5.0in"
-    height="2.65625in"}![A picture containing screenshot Description
-    generated with high
-    confidence](./MediaFolder/media/image104.JPG){width="5.0in"
-    height="2.65625in"}![A screenshot of a cell phone Description
-    generated with very high
-    confidence](./MediaFolder/media/image105.JPG){width="5.0in"
-    height="2.65625in"}
+    confidence](media/image101.JPG){width="5.0in" height="2.65625in"}![A
+    screenshot of a computer Description generated with very high
+    confidence](media/image98.JPG){width="5.0in" height="2.65625in"}![A
+    screenshot of a computer Description generated with very high
+    confidence](media/image102.JPG){width="5.0in" height="2.65625in"}![A
+    screenshot of a computer Description generated with very high
+    confidence](media/image103.JPG){width="5.0in" height="2.65625in"}![A
+    picture containing screenshot Description generated with high
+    confidence](media/image104.JPG){width="5.0in" height="2.65625in"}![A
+    screenshot of a cell phone Description generated with very high
+    confidence](media/image105.JPG){width="5.0in" height="2.65625in"}
 
 End the lab
 ===========
@@ -1090,9 +1014,9 @@ To end the lab, simply delete the resource group *ossdemo* from the
 Azure portal or from the Azure CLI. And delete the created *webhook*
 from your *git* repository.
 
-> **\$ az group delete ossdemo**
+\```bash az group delete ossdemo
 
-**References**
+References
 --------------
 
 ### Useful links
