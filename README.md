@@ -38,7 +38,7 @@ and skip Challenge-1.
 request a resource group with owner access control from your Azure
 admin.
 
-[NB:]{.underline} Even though, you can bring your own Red Hat
+[NB:] Even though, you can bring your own Red Hat
 subscription for OpenShift, the deployment template in this lab will
 provision the master and compute nodes from RHEL images, pay as you go.
 You will incur extra charges not covered by the Azure free tier. Amount
