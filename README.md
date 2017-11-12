@@ -20,19 +20,21 @@ to perform the lab instructions.
 
 -   You need to have an account on [GitHub](http://www.github.com/), If
     you don't have one create a free account (<https://github.com/>).
-
-[NB]{.underline}: As an alternative to OpenShift enterprise, you can
+<aside class="notice">
+[NB] As an alternative to OpenShift enterprise, you can
 deploy the community version OpenShift.org. And as an alternative to
 CloudForms, you can deploy the community version ManageIQ. The community
 edition represents a test bed incubator and upstream to the enterprise
 one. All OpenShift container platform features are also available in
 OpenShift.org.
+</aside>
 
 To perform the lab using OpenShift.org, follow the steps at
 [https://github.com/Microsoft/openshift-origin](https://github.com/Microsoft/openshift-origina)
 and skip Challenge-1.
 
-[NB]{.underline}: If you want to use your corporate Azure account,
+<aside class="notice">
+[NB] If you want to use your corporate Azure account,
 request a resource group with owner access control from your Azure
 admin.
 
@@ -41,6 +43,7 @@ subscription for OpenShift, the deployment template in this lab will
 provision the master and compute nodes from RHEL images, pay as you go.
 You will incur extra charges not covered by the Azure free tier. Amount
 varies depending on the number and size of the vm nodes.
+</aside>
 
 The Lab challenges cover:
 
