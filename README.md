@@ -90,8 +90,7 @@ OpenShift offers another alternative to multiple CaaS (container as a
 service) solutions available on Azure, such as *Azure container service,
 Azure service fabric* and *Pivotal* from *CloudFoundry*...
 
-> ![](./MediaFolder/media/image4.png){width="4.99375in"
-> height="1.9194444444444445in"}
+ ![](./MediaFolder/media/image4.png)
 
 OpenShift container platform is available as an Azure Resource Manager
 solution at https://github.com/Microsoft/openshift-container-platform.
