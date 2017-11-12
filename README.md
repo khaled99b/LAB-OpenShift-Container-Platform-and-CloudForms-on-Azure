@@ -72,8 +72,7 @@ run Red Hat OpenShift on Microsoft Azure and Azure Stack.
 
 OpenShift offers multiple access modes including: developer CLI, admin
 CLI, web console and IDE plugins. Click2cloud is a plugin that allows
-Visual studio to deploy code to OpenShift, directly.
-
+Visual studio to deploy code to OpenShift, directly
 ![](./MediaFolder/media/image3.jpg){width="4.989583333333333in"
 height="3.7465277777777777in"}
 
@@ -105,9 +104,9 @@ solution at https://github.com/Microsoft/openshift-container-platform.
     "osslab\_rsa" and save it under .ssh directory
 
   ![](./MediaFolder/media/image7.JPG)
------------------------------
-**\$ ssh-keygen **
------------------------------
+```bash
+$ ssh-keygen
+```
 1.  Use the Azure CLI v2 to create a new resource group to host the lab
     resources
 
