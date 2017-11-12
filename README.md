@@ -104,9 +104,10 @@ solution at https://github.com/Microsoft/openshift-container-platform.
 2.  From the open terminal, create a new ssh key pair with the name
     "osslab\_rsa" and save it under .ssh directory
 
-> ![](./MediaFolder/media/image7.JPG){width="5.0in"
-> height="1.2520833333333334in"}**\$ ssh-keygen **
-
+  ![](./MediaFolder/media/image7.JPG)
+-----------------------------
+**\$ ssh-keygen **
+-----------------------------
 1.  Use the Azure CLI v2 to create a new resource group to host the lab
     resources
 
