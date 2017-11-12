@@ -252,11 +252,11 @@ Pods have a lifecycle; they are defined, then they are assigned to run on a node
 ![](./MediaFolder/media/image31.JPG)
 
 8. From the overview page, click the web address for the application in the upper right corner. Verify that the web application is up and available.
+
 ![](./MediaFolder/media/image32.JPG)
 
 ![](./MediaFolder/media/image33.JPG)
     
-
 9.  Return to the *OpenShift* admin console. Browse to the project's overview page, and test scaling out and in your application by increasing or decreasing the number of *pods*, using the up and down arrow signs on the web console.
 Scale out the app into 3 pods and watch the progress.
 
@@ -792,7 +792,6 @@ $Location -VM $VirtualMachine
 ![](./MediaFolder/media/image103.JPG)
 ![](./MediaFolder/media/image104.JPG)
 ![](./MediaFolder/media/image105.JPG)
-    
 
 End the lab
 ===========
