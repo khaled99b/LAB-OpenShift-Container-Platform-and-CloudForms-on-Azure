@@ -90,8 +90,8 @@ OpenShift offers another alternative to multiple CaaS (container as a
 service) solutions available on Azure, such as *Azure container service,
 Azure service fabric* and *Pivotal* from *CloudFoundry*...
 
-> ![](./MediaFolder/media/image4.png)
-> 
+ ![](./MediaFolder/media/image4.png)
+ 
 
 OpenShift container platform is available as an Azure Resource Manager
 solution at https://github.com/Microsoft/openshift-container-platform.
@@ -104,26 +104,26 @@ solution at https://github.com/Microsoft/openshift-container-platform.
 2.  From the open terminal, create a new ssh key pair with the name
     "osslab\_rsa" and save it under .ssh directory
 
-> ![](./MediaFolder/media/image7.JPG)
-> $ ssh-keygen 
+ ![](./MediaFolder/media/image7.JPG)
+ $ ssh-keygen 
 
-1.  Use the Azure CLI v2 to create a new resource group to host the lab
+3.  Use the Azure CLI v2 to create a new resource group to host the lab
     resources
 
-> ![](./MediaFolder/media/image8.JPG)
-> $ az group create -n ossdemo -l
-> \'West Europe\'
+ ![](./MediaFolder/media/image8.JPG)
+ $ az group create -n ossdemo -l
+ \'West Europe\'
 
-1.  Create a Key Vault and add your *ssh* private key, created in the
+4.  Create a Key Vault and add your *ssh* private key, created in the
     previous step.
 
-> ![](./MediaFolder/media/image9.JPG)
-> $ az keyvault create -n ossKV -g
-> ossdemo -l \'West Europe\' \--enabled-for-template-deployment true
->
-> ![](./MediaFolder/media/image10.JPG)
-> $ az keyvault secret set
-> \--vault-name ossKV -n ossSecret \--file \~/.ssh/osslab\_rsa
+ ![](./MediaFolder/media/image9.JPG)
+ $ az keyvault create -n ossKV -g
+ ossdemo -l \'West Europe\' \--enabled-for-template-deployment true
+
+ ![](./MediaFolder/media/image10.JPG)
+ $ az keyvault secret set
+ \--vault-name ossKV -n ossSecret \--file \~/.ssh/osslab\_rsa
 
 The deployment of OpenShift relies on Ansible scripts that should be
 configured for Azure as the cloud provider. During and
@@ -136,18 +136,18 @@ policy and permissions for an application\'s use in a specific tenant,
 providing the basis for a security principal to represent the
 application at run-time.
 
-1.  Create an Azure Active Directory Service Principal and choose a
+5.  Create an Azure Active Directory Service Principal and choose a
     > different password. Copy the resource group scope from step
     > number 3.
 
-> \$ az ad sp create-for-rbac -n openshiftcloudprovider \--password
-> changeMePassword \--role contributor \--scopes
-> /subscriptions/f3a5dfdb-e863-40d9-b23c-752b886c0260/resourceGroups/ossdemo
+ \$ az ad sp create-for-rbac -n openshiftcloudprovider \--password
+ changeMePassword \--role contributor \--scopes
+ /subscriptions/f3a5dfdb-e863-40d9-b23c-752b886c0260/resourceGroups/ossdemo
 
 ![](./MediaFolder/media/image11.JPG)
 
 
-1.  ![](./MediaFolder/media/image12.JPG)
+6.  ![](./MediaFolder/media/image12.JPG)
     Now, go to the Azure portal and assign the
     required permissions to the service principal "osscloudprovider" on
     the resource group "ossdemo".
@@ -156,11 +156,11 @@ application at run-time.
 
 ![](./MediaFolder/media/image14.JPG)}
 
-1.  Note the application id of your service principal.
+7.  Note the application id of your service principal.
 
-> \$ az ad sp show \--id http://openshiftcloudprovider
+ \$ az ad sp show \--id http://openshiftcloudprovider
 
-1.  Use the following Azure resource manager solutions
+8.  Use the following Azure resource manager solutions
     > [template](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fopenshift-container-platform%2Fmaster%2Fazuredeploy.json)
     > to deploy your OpenShift environment:
     > <https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fopenshift-container-platform%2Fmaster%2Fazuredeploy.json>
@@ -206,13 +206,13 @@ confidence](./MediaFolder/media/image19.JPG)
 ![](./MediaFolder/media/image15.JPG)
 
 
-1.  From the Azure portal, go to your resource group "ossdemo", track
+9.  From the Azure portal, go to your resource group "ossdemo", track
     > the progress of the deployment and make sure the deployment
     > finishes, successfully. The process should last around 20 minutes.
     > It is a good time to have a break.
 
-> ![](./MediaFolder/media/image20.png)
-> 
+ ![](./MediaFolder/media/image20.png)
+ 
 
 ![](./MediaFolder/media/image21.png)
 The following diagram explains the
@@ -228,8 +228,8 @@ request to the appropriate server.
 The next diagram, explains the role and tasks of the Openshift
 master/agents and the logical architecture of the solution.
 
-> ![](./MediaFolder/media/image22.jpg)
-> 
+ ![](./MediaFolder/media/image22.jpg)
+ 
 
 CHALLENGE -2: Create and manage projects 
 =========================================
@@ -246,8 +246,8 @@ process, and creates a new deployment.
 2.  Browse to *openshift/ruby-ex* repository and fork it into your
     > *github* account
 
-> ![](./MediaFolder/media/image23.PNG)
-> 
+ ![](./MediaFolder/media/image23.PNG)
+ 
 
 1.  From your browser, visit the OpenShift web console at
     > *https://FQDN-master-node:8443*. The web site, uses a self-signed
@@ -256,12 +256,12 @@ process, and creates a new deployment.
 
 2.  Log in using your username and password.
 
-> ![A screenshot of a cell phone Description generated with high
-> confidence](./MediaFolder/media/image24.JPG)
-> ![A screenshot of a cell phone Description
-> generated with very high
-> confidence](./MediaFolder/media/image25.JPG)
-> 
+ ![A screenshot of a cell phone Description generated with high
+ confidence](./MediaFolder/media/image24.JPG)
+ ![A screenshot of a cell phone Description
+ generated with very high
+ confidence](./MediaFolder/media/image25.JPG)
+ 
 
 1.  To create a new project, click New Project.
 
@@ -290,17 +290,17 @@ or from a *template*:
 
 3.  Click the ruby:latest builder image.
 
-> ![A screenshot of a social media post Description generated with very
-> high confidence](./MediaFolder/media/image28.JPG)
-> 
+ ![A screenshot of a social media post Description generated with very
+ high confidence](./MediaFolder/media/image28.JPG)
+ 
 
 1.  Type a name for your application, and specify the git repository
     URL you previously forked:
     <https://github.com/%3Cyour_github_username%3E/ruby-ex.git>.
 
-> ![A screenshot of a cell phone Description generated with very high
-> confidence](./MediaFolder/media/image29.JPG)
-> 
+ ![A screenshot of a cell phone Description generated with very high
+ confidence](./MediaFolder/media/image29.JPG)
+ 
 
 1.  Optionally, click Show advanced routing, build, and deployment
     options. Explore the build configuration and other options and
@@ -321,26 +321,26 @@ or from a *template*:
     host the application. Once the build is complete, Openshift will
     start a new pod.
 
-> ![](./MediaFolder/media/image31.JPG)}
->
-> OpenShift leverages the Kubernetes concept of a pod, which is one or
-> more containers deployed together on one host. A pod is the smallest
-> compute unit that can be defined, deployed, and managed.
->
-> Pods are the rough equivalent of a machine instance (physical or
-> virtual) to a container. Each pod is allocated its own internal IP
-> address, therefore owning its entire port space. Containers within
-> pods can share their local storage and networking.
->
-> While the Ruby *pod* is being created, its status is shown as pending.
-> The Ruby *pod* then starts up and displays its newly-assigned IP
-> address. When the Ruby *pod* is running, the build is complete.
->
-> Pods have a lifecycle; they are defined, then they are assigned to run
-> on a node, then they run until their container(s) exit or they are
-> removed for some other reason. Pods, depending on policy and exit
-> code, may be removed after exiting, or may be retained in order to
-> enable access to the logs of their containers.
+ ![](./MediaFolder/media/image31.JPG)}
+
+ OpenShift leverages the Kubernetes concept of a pod, which is one or
+ more containers deployed together on one host. A pod is the smallest
+ compute unit that can be defined, deployed, and managed.
+
+ Pods are the rough equivalent of a machine instance (physical or
+ virtual) to a container. Each pod is allocated its own internal IP
+ address, therefore owning its entire port space. Containers within
+ pods can share their local storage and networking.
+
+ While the Ruby *pod* is being created, its status is shown as pending.
+ The Ruby *pod* then starts up and displays its newly-assigned IP
+ address. When the Ruby *pod* is running, the build is complete.
+
+ Pods have a lifecycle; they are defined, then they are assigned to run
+ on a node, then they run until their container(s) exit or they are
+ removed for some other reason. Pods, depending on policy and exit
+ code, may be removed after exiting, or may be retained in order to
+ enable access to the logs of their containers.
 
 1.  ![](./MediaFolder/media/image32.JPG)
     From the overview page, click the web address for
@@ -389,9 +389,9 @@ To set up a *webhook* for your application:
 4.  Click next to GitHub webhook URL to copy your *webhook* payload
     URL.
 
-> ![A screenshot of a cell phone Description generated with very high
-> confidence](./MediaFolder/media/image36.JPG)
-> 
+ ![A screenshot of a cell phone Description generated with very high
+ confidence](./MediaFolder/media/image36.JPG)
+ 
 
 1.  Navigate to your forked repository on GitHub, then click
     Settings.
@@ -443,47 +443,47 @@ as A/B testing, Rolling upgrades...
 
 1.  Use Azure cloud shell or install *Git* into your local machine
 
-> PS: If you don't want to use *git*, you still can perform this
-> challenge by moving to step-5 and editing the file *config.ru*,
-> directly from the web interface of *github* and then go to step-7.
->
-> Create a "dev" folder and change into.
->
-> \$ mkdir dev && cd dev
+ PS: If you don't want to use *git*, you still can perform this
+ challenge by moving to step-5 and editing the file *config.ru*,
+ directly from the web interface of *github* and then go to step-7.
+
+ Create a "dev" folder and change into.
+
+ \$ mkdir dev && cd dev
 
 1.  Clone the forked repository to your local system
 
-> \$ git clone https://github.com/\<YourGithubUsername\>/ruby-ex.git
+ \$ git clone https://github.com/\<YourGithubUsername\>/ruby-ex.git
 
 1.  Make sure your local *git* repository is referencing to your
     *ruby-ex git*, on *github*:
 
-> \$ cd ruby-ex
->
-> \$ git remote -v
+ \$ cd ruby-ex
+
+ \$ git remote -v
 
 1.  On your local machine, use your preferred text editor to change the
     sample application's source for the file *config.ru*
 
-> Make a code change that will be visible from within your application.
-> For example: on line 229, change the title to "Welcome to your Ruby
-> application on OpenShift POWERED BY AZURE!", then save your changes.
+ Make a code change that will be visible from within your application.
+ For example: on line 229, change the title to "Welcome to your Ruby
+ application on OpenShift POWERED BY AZURE!", then save your changes.
 
 1.  Verify the working tree status
 
-> \$ git status
+ \$ git status
 
 1.  Add config.ru content to the index, Commit the change in *git*, and
     push the change to your fork. You will need to authenticate with
     your *github* credentials
 
-> \$ git add config.ru
->
-> \$ git commit -m \"simple message\"  
->
-> \$ git status
->
-> \$ git push
+ \$ git add config.ru
+
+ \$ git commit -m \"simple message\"  
+
+ \$ git status
+
+ \$ git push
 
 1.  If your *webhook* is correctly configured, your application will
     immediately rebuild itself, based on your changes. Monitor the build
@@ -660,21 +660,21 @@ configuring OpenShift to export monitoring metrics directly to OMS.
     master node and create an OpenShift project and user account for
     OMS.
 
-> \[ossadmin@oss-bastion \~\]\$ ssh oss-master-0
->
-> \[ossadmin@oss-master-0 \~\]\$ oadm new-project omslogging
-> \--node-selector=\'zone=default\'
->
-> \[ossadmin@oss-master-0 \~\]\$ oc project omslogging
->
-> \[ossadmin@oss-master-0 \~\]\$ oc create serviceaccount omsagent
->
-> \[ossadmin@oss-master-0 \~\]\$ oadm policy
-> add-cluster-role-to-user cluster-reader
-> system:serviceaccount:omslogging:omsagent
->
-> \[ossadmin@oss-master-0 \~\]\$ oadm policy add-scc-to-user
-> privileged system:serviceaccount:omslogging:omsagent
+ \[ossadmin@oss-bastion \~\]\$ ssh oss-master-0
+
+ \[ossadmin@oss-master-0 \~\]\$ oadm new-project omslogging
+ \--node-selector=\'zone=default\'
+
+ \[ossadmin@oss-master-0 \~\]\$ oc project omslogging
+
+ \[ossadmin@oss-master-0 \~\]\$ oc create serviceaccount omsagent
+
+ \[ossadmin@oss-master-0 \~\]\$ oadm policy
+ add-cluster-role-to-user cluster-reader
+ system:serviceaccount:omslogging:omsagent
+
+ \[ossadmin@oss-master-0 \~\]\$ oadm policy add-scc-to-user
+ privileged system:serviceaccount:omslogging:omsagent
 
 2.  Use wget to download the ocp-\* files from
     <https://github.com/Microsoft/OMS-docker/tree/master/OpenShift>
@@ -682,14 +682,14 @@ configuring OpenShift to export monitoring metrics directly to OMS.
 3.  Make the file "secretgen.sh" executable. Run it, and provide our
     workspace id and key.
 
-> \[ossadmin@oss-master-0 \~\]\$ chmod +x secretgen.sh
->
-> \[ossadmin@oss-master-0 \~\]\$ ./secretgen.sh
+ \[ossadmin@oss-master-0 \~\]\$ chmod +x secretgen.sh
+
+ \[ossadmin@oss-master-0 \~\]\$ ./secretgen.sh
 
 2.  Create an OMS daemon set. A DaemonSet ensures that all the openshift
     cluster nodes run a copy of the oms pod.
 
-> \[ossadmin@oss-master-0 \~\]\$ oc create -f ocp-secret.yaml
+ \[ossadmin@oss-master-0 \~\]\$ oc create -f ocp-secret.yaml
 
 2.  Validate that the daemon set is working properly
 
@@ -750,7 +750,7 @@ to perform the steps: Powershell.
     number of MB, otherwise the provisioning will fail in the next
     steps. We can use powershell to perform this operation
 
-> \> Resize-VHD -Path \$LocalImagePath -SizeBytes 32770MB
+ \> Resize-VHD -Path \$LocalImagePath -SizeBytes 32770MB
 
 1.  ![](./MediaFolder/media/image75.JPG)
     Login to Azure and Configure some
@@ -1069,7 +1069,7 @@ To end the lab, simply delete the resource group *ossdemo* from the
 Azure portal or from the Azure CLI. And delete the created *webhook*
 from your *git* repository.
 
-> \$ az group delete ossdemo
+ \$ az group delete ossdemo
 
 References
 --------------
