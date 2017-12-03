@@ -31,7 +31,7 @@ OpenShift.org.
 </aside>
 
 To perform the lab using OpenShift.org, follow the steps at
-[https://github.com/Microsoft/openshift-origin](https://github.com/Microsoft/openshift-origina)
+[https://github.com/Microsoft/openshift-origin](https://github.com/Microsoft/openshift-origin)
 and skip Challenge-1.
 
 <aside class="notice">
