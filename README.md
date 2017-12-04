@@ -1,7 +1,7 @@
 Agenda
 ======
 
-[CHALLENGE -1: Deploy Openshift on azure](#challenge--1)
+[CHALLENGE -1: Deploy Openshift on azure](#challenge)
 
 CHALLENGE -2: Create and manage projects 
 
