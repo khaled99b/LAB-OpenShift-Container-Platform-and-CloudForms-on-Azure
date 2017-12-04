@@ -1,7 +1,7 @@
-sAgenda
+Agenda
 ======
 
-[CHALLENGE -1: Deploy Openshift on azure](#deploy-openShift-on-azure)
+[CHALLENGE -1: Deploy Openshift on azure](#deploy-openshift-on-azure)
 
 CHALLENGE -2: Create and manage projects 
 
