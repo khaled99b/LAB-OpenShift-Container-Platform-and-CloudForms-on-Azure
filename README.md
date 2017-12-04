@@ -1,3 +1,5 @@
+Agenda
+======
 
 CHALLENGE -1: Deploy Openshift on azure 
 
