@@ -1,7 +1,7 @@
 Agenda
 ======
 
-#CHALLENGE -1: Deploy Openshift on azure
+[CHALLENGE -1: Deploy Openshift on azure](challenge1)
 
 CHALLENGE -2: Create and manage projects 
 
@@ -88,7 +88,7 @@ OpenShift offers multiple access modes including: developer CLI, admin CLI, web 
 ![](./MediaFolder/media/image3.jpg)
 
 
-CHALLENGE-1: Deploy Openshift on azure (#CHALLENGE -1: Deploy Openshift on azure)
+CHALLENGE-1: Deploy Openshift on azure (#challenge1)
 =======================================
 
 OpenShift, leverages multiple Azure services such as VM *extensions*, Azure disks, and *Key vaults...* to provide an Enterprise grade offering for customers who would like to containerize and manage their applications, without investing long time and hard effort configuring and integrating various tools.
