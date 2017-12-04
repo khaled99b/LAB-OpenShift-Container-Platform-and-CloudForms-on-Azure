@@ -1,10 +1,16 @@
 
 CHALLENGE -1: Deploy Openshift on azure 
+
 CHALLENGE -2: Create and manage projects 
+
 CHALLENGE -3: Create and manage Applications
+
 CHALLENGE -4: Configuring automated builds
+
 CHALLENGE -5: Continuous deployment
+
 CHALLENGE -6: Mini project: JBOSS EAP application
+
 CHALLENGE -7: Monitoring oepnshift with azure oms
 
 Objectives and pre-requisites
