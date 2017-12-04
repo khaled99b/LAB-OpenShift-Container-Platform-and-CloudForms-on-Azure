@@ -1,19 +1,21 @@
 Agenda
 ======
 
-[CHALLENGE -1: Deploy Openshift on azure](#challenge)
+[CHALLENGE -1: Deploy Openshift on azure](#challenge-1-deploy-openshift-on-azure)
 
-CHALLENGE -2: Create and manage projects 
+[CHALLENGE -2: Create and manage projects](#challenge-2-create-and-manage-projects)
 
-CHALLENGE -3: Create and manage Applications
+[CHALLENGE -3: Create and manage Applications](#challenge-3-create-and-manage-applications)
 
-CHALLENGE -4: Configuring automated builds
+[CHALLENGE -4: Configuring automated builds](#challenge-4-configuring-automated-builds)
 
-CHALLENGE -5: Continuous deployment
+[CHALLENGE -5: Continuous deployment](#challenge-5-continuous-deployment)
 
-CHALLENGE -6: Mini project: JBOSS EAP application
+[CHALLENGE -6: Mini project: JBOSS EAP application](#challenge-6-mini-project-jboss-eap-application)
 
-CHALLENGE -7: Monitoring oepnshift with azure oms
+[CHALLENGE -7: Monitoring openshift with azure oms](#challenge-7-monitoring-openshift-with-azure-oms)
+
+[CHALLENGE -8: Red Hat Cloud Forms on Azure](#challenge-8-red-hat-cloud-forms-on-azure)
 
 Objectives and pre-requisites
 =============================
@@ -492,7 +494,7 @@ $ oc get dc nationalparklocator -o json
 ![](./MediaFolder/media/image65.JPG)
     
 
-CHALLENGE -7: Monitoring oepnshift with azure oms
+CHALLENGE -7: Monitoring openshift with azure oms
 =================================================
 
 Azure Operations Management Suite (OMS) provides native support to OpenShift. In this challenge, we will walk through the steps of configuring OpenShift to export monitoring metrics directly to OMS.
