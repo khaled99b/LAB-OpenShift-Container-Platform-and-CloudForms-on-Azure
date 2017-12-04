@@ -1,21 +1,21 @@
 Agenda
 ======
 
-[CHALLENGE -1: Deploy Openshift on azure](#challenge-1-deploy-openshift-on-azure)
+[CHALLENGE -1: Deploy Openshift on azure](#challenge--1-deploy-openshift-on-azure)
 
-[CHALLENGE -2: Create and manage projects](#challenge-2-create-and-manage-projects)
+[CHALLENGE -2: Create and manage projects](#challenge--2-create-and-manage-projects)
 
-[CHALLENGE -3: Create and manage Applications](#challenge-3-create-and-manage-applications)
+[CHALLENGE -3: Create and manage Applications](#challenge--3-create-and-manage-applications)
 
-[CHALLENGE -4: Configuring automated builds](#challenge-4-configuring-automated-builds)
+[CHALLENGE -4: Configuring automated builds](#challenge--4-configuring-automated-builds)
 
-[CHALLENGE -5: Continuous deployment](#challenge-5-continuous-deployment)
+[CHALLENGE -5: Continuous deployment](#challenge--5-continuous-deployment)
 
-[CHALLENGE -6: Mini project: JBOSS EAP application](#challenge-6-mini-project-jboss-eap-application)
+[CHALLENGE -6: Mini project: JBOSS EAP application](#challenge--6-mini-project-jboss-eap-application)
 
-[CHALLENGE -7: Monitoring openshift with azure oms](#challenge-7-monitoring-openshift-with-azure-oms)
+[CHALLENGE -7: Monitoring openshift with azure oms](#challenge--7-monitoring-openshift-with-azure-oms)
 
-[CHALLENGE -8: Red Hat Cloud Forms on Azure](#challenge-8-red-hat-cloud-forms-on-azure)
+[CHALLENGE -8: Red Hat Cloud Forms on Azure](#challenge--8-red-hat-cloud-forms-on-azure)
 
 Objectives and pre-requisites
 =============================
@@ -90,7 +90,7 @@ OpenShift offers multiple access modes including: developer CLI, admin CLI, web 
 ![](./MediaFolder/media/image3.jpg)
 
 
-CHALLENGE-1: Deploy Openshift on azure
+CHALLENGE -1: Deploy Openshift on azure
 ======================================
 
 OpenShift, leverages multiple Azure services such as VM *extensions*, Azure disks, and *Key vaults...* to provide an Enterprise grade offering for customers who would like to containerize and manage their applications, without investing long time and hard effort configuring and integrating various tools.
