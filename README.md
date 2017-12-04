@@ -353,6 +353,7 @@ For example: on line 229, change the title to "Welcome to your Ruby application 
 
 6.  Add config.ru content to the index, Commit the change in *git*, and push the change to your fork. You will need to authenticate with your *github* credentials
 
+
 ```bash
  $ git add config.ru
  $ git commit -m "simple message"  
@@ -389,6 +390,8 @@ During this challenge, we will leverage the CLI tool of OpenShift.
 1.  Download and install the OpenShift CLI related to your operating system. The easiest way to download the CLI is by accessing the About page on the web console if your cluster administrator has enabled the download links. Another alternative is to ssh into your bastion host that has the CLI tool installed already.
 
 ![](./MediaFolder/media/image43.JPG)
+
+If you don't have a valid Red Hat subscription, you could still download the oc tool from: https://github.com/CCI-MOC/moc-public/wiki/Installing-the-oc-CLI-tool-of-OpenShift
 
 2.  Use your openshift url endpoint to login to your environment from the CLI
 
