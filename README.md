@@ -121,7 +121,7 @@ $ ssh-keygen
 $ az group create -n ossdemo -l 'West Europe'
 ```
 
-4.  Create a Key Vault and add your *ssh* private key, created in the previous step.
+4.  Create a Key Vault and add your *ssh* private key, created in the previous step. The name of the Key Vault should be unique as it containes a public endpoint.
 
 ![](./MediaFolder/media/image9.JPG)
 
@@ -138,7 +138,7 @@ The deployment of OpenShift relies on Ansible scripts that should be configured 
 When you have an application that needs to access or modify resources, you must set up an Azure Active Directory (AD) application and assign the required permissions to it. The service principal object defines the
 policy and permissions for an application's use in a specific tenant, providing the basis for a security principal to represent the application at run-time.
 
-5.  Create an Azure Active Directory Service Principal and choose a different password. Copy the resource group scope from step number 3.
+5.  Create an Azure Active Directory Service Principal and choose a different password. Copy the resource group scope (id) from step number 3. The name of the Service Principal should be unique as it contians a public endpoint.
 
 ```bash
 $ az ad sp create-for-rbac -n openshiftcloudprovider --password changeMePassword --role contributor --scopes subscriptions/f3a5dfdb-e863-40d9-b23c-752b886c0260/resourceGroups/ossdemo
@@ -170,7 +170,7 @@ we will need:
     -   Red Hat Network/Satellite name
     -   The associated password or activation key
 
--   PoolId provides access to the required software channels for Openshift and Cloudforms. PoolId can be listed by invoking the command 'subscription-manager list -available' from a registered RHEL system. Contact your Red Hat admin or Red Hat support if you are missing information.
+-   PoolId provides access to the required software channels for Openshift and Cloudforms. PoolId can be listed by invoking the command 'subscription-manager list -available' from a registered RHEL system. Also can be listed if you login to [RHN](https://rhn.redhat.com/) and select the OpenShift subscription that will be used. Contact your Red Hat admin or Red Hat support if you are missing information.
 
 -   For high availability consideration, we are deploying 3 vms for each type (master, infra and agent). If you want to deploy the lab with minimal cost, you can reduce the number of vms to one per each. Also, you can scale down the vm families, but preferably stick to vms with SSD disks for faster deployment.
 
@@ -315,6 +315,8 @@ To set up a *webhook* for your application:
 
 9.  Disable SSL verification and click Add webhook to save.
 
+10. Keep all the other parameters with the default values.
+
 GitHub will now attempt to send a ping payload to your *OpenShift* server to ensure that communication is successful. If you see a green check mark appear next to your *webhook* URL, then it is correctly configured.
 
 Hover your mouse over the check mark to see the status of the last delivery.
@@ -362,7 +364,7 @@ Create a "dev" folder and change into.
 4.  On your local machine, use your preferred text editor to change the sample application's source for the file *config.ru*
 
 Make a code change that will be visible from within your application.
-For example: on line 229, change the title to "Welcome to your Ruby application on OpenShift POWERED BY AZURE!", then save your changes.
+For example: on line 242, change the title to "Welcome to your Ruby application on OpenShift POWERED BY AZURE!", then save your changes.
 
 5.  Verify the working tree status
 
@@ -418,6 +420,10 @@ If you don't have a valid Red Hat subscription, you could still download the oc 
 
 3.  Create a new project "nationalparks"
 
+```bash
+oc new-project nationalparks
+```
+
 ![](./MediaFolder/media/image45.JPG)    
 
 4.  From the web console, add a new Java application using the following git lab repository <https://gitlab.com/gshipley/nationalparks.git>
@@ -426,15 +432,33 @@ If you don't have a valid Red Hat subscription, you could still download the oc 
 
 ![](./MediaFolder/media/image47.JPG)
 
+Please make sure to select the `master` branch for cloning the project and the Context Dir to empty.
+
 5.  List builds operations:
+
+```bash
+oc get builds
+```
 
 ![](./MediaFolder/media/image48.JPG)
     
 6.  List existing projects, pods and view logs in real time:
 
+```bash
+oc get projects
+```
+
 ![](./MediaFolder/media/image49.JPG)
 
+```bash
+oc get pods -w
+```
+
 ![](./MediaFolder/media/image50.JPG)
+
+```bash
+oc logs -f nationalparklocator-1-build
+```
     
 ![](./MediaFolder/media/image51.JPG)
 
@@ -447,12 +471,12 @@ Output truncated ....
 ![](./MediaFolder/media/image53.JPG)
 
 ![](./MediaFolder/media/image54.JPG)
-    
 
 8.  We can see the map but not the attraction points.The reason is that we only deployed the front-end application. What we will need now is to add a backend data base. From the web console, add a new persistent mongodb data store. And set the needed environment variables and specification as bellow:
-![](./MediaFolder/media/image55.JPG)
 
 ![](./MediaFolder/media/image56.JPG)
+
+![](./MediaFolder/media/image55.JPG)
     
 ![](./MediaFolder/media/image57.JPG)
 
@@ -466,6 +490,10 @@ Output truncated ....
     
 
 11. Change the deployment configuration of the front-end application to include the environment variables required to access the database
+
+```bash
+oc env dc nationalparklocator -e MONGODB_USER=mongodb MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb
+```
 
 ![](./MediaFolder/media/image60.JPG)
 
@@ -487,10 +515,22 @@ $ oc get dc nationalparklocator -o json
     
 15. Our new application became very popular, and we need to scale out our front end to two pods. Use "oc scale" to do it
 
+```bash
+oc get dc
+oc scale --replicas=2 dc/nationalparklocator
+oc get dc
+```
+
 ![](./MediaFolder/media/image64.JPG)
     
 16. Now, let's test the self-healing, capabilities of OpenShift by deleting one of the running pods. Because, the desired state of the replication controller is 2 pods for the application "nationalparklocator", OpenShift will automatically and instantly trigger the deployment of a new pod.
     
+```bash
+oc get pods
+oc delete pod nationalparklocator-2-2cqz2
+oc get pods
+```
+
 ![](./MediaFolder/media/image65.JPG)
     
 
@@ -538,6 +578,11 @@ Azure Operations Management Suite (OMS) provides native support to OpenShift. In
 ```
 
 7.  Validate that the daemon set is working properly
+
+```bash
+oc get daemonset
+oc describe daemonset oms
+```
 
 ![](./MediaFolder/media/image69.JPG)
 
