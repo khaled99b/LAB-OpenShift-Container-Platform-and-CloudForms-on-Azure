@@ -551,6 +551,8 @@ Azure Operations Management Suite (OMS) provides native support to OpenShift. In
     
 3.  From Cloud Shell ssh into the bastion host, then ssh into one of the master node and create an OpenShift project and user account for OMS.
 
+> Instead of ssh into the bastion and then the master, the command `oc adm` can be used from the CLI to replace `oadm`.
+
 ```bash
  [ossadmin@oss-bastion ~]$ ssh oss-master-0
  [ossadmin@oss-master-0 ~]$ oadm new-project omslogging --node-selector='zone=default'
@@ -564,20 +566,26 @@ Azure Operations Management Suite (OMS) provides native support to OpenShift. In
 
 <https://github.com/Microsoft/OMS-docker/tree/master/OpenShift>
 
-5.  Make the file "secretgen.sh" executable. Run it, and provide our workspace id and key.
+5.  Make the file "ocp-ecretgen.sh" executable. Run it, and provide our workspace id and key.
 
 ```bash
- [ossadmin@oss-master-0 ~]$ chmod +x secretgen.sh
- [ossadmin@oss-master-0 ~]$ ./secretgen.sh
+ [ossadmin@oss-master-0 ~]$ chmod +x ocp-secretgen.sh
+ [ossadmin@oss-master-0 ~]$ ./ocp-secretgen.sh
 ```
 
-6.  Create an OMS daemon set. A DaemonSet ensures that all the openshift cluster nodes run a copy of the oms pod.
+6. Create the OMS secret that will be used by the deamon set.
 
 ```bash
  [ossadmin@oss-master-0 ~]$ oc create -f ocp-secret.yaml
 ```
 
-7.  Validate that the daemon set is working properly
+7.  Create an OMS daemon set. A DaemonSet ensures that all the openshift cluster nodes run a copy of the oms pod.
+
+```bash
+[ossadmin@oss-master-0 ~]$ oc create -f ocp-ds-omsagent.yaml
+```
+
+8.  Validate that the daemon set is working properly
 
 ```bash
 oc get daemonset
@@ -586,11 +594,11 @@ oc describe daemonset oms
 
 ![](./MediaFolder/media/image69.JPG)
 
-8.  Back to OMS portal, you will find that there are new data sources exporting metrics.
+9.  Back to OMS portal, you will find that there are new data sources exporting metrics.
 
 ![](./MediaFolder/media/image70.JPG)
     
-9.  Create your custom dashboard and start exploring the data exported by OpenShift under different visualization formats
+10.  Create your custom dashboard and start exploring the data exported by OpenShift under different visualization formats
 
 ![](./MediaFolder/media/image71.JPG)
     
