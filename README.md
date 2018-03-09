@@ -408,11 +408,9 @@ In this mini project, we will deploy a three tiers application consisting of Lea
 
 During this challenge, we will leverage the CLI tool of OpenShift.
 
-1.  Download and install the OpenShift CLI related to your operating system. The easiest way to download the CLI is by accessing the About page on the web console if your cluster administrator has enabled the download links. Another alternative is to ssh into your bastion host that has the CLI tool installed already.
+1.  Download and install the OpenShift CLI related to your operating system. The easiest way to download the CLI is by accessing the Command Line Tools page on the web console if your cluster administrator has enabled the download links. Another alternative is to ssh into your bastion host that has the CLI tool installed already.
 
 ![](./MediaFolder/media/image43.JPG)
-
-If you don't have a valid Red Hat subscription, you could still download the oc tool from: https://github.com/CCI-MOC/moc-public/wiki/Installing-the-oc-CLI-tool-of-OpenShift
 
 2.  Use your openshift url endpoint to login to your environment from the CLI
 
@@ -426,15 +424,21 @@ oc new-project nationalparks
 
 ![](./MediaFolder/media/image45.JPG)    
 
-4.  From the web console, add a new Java application using the following git lab repository <https://gitlab.com/gshipley/nationalparks.git>
+4. If you are using OCP 3.5 import EAP template into your project
 
-![](./MediaFolder/media/image46.JPG)    
+```bash
+oc create -f https://raw.githubusercontent.com/jmnohales/nationalparks/master/testdrive_eap70-s2i.yml
+```
 
-![](./MediaFolder/media/image47.JPG)
+5.  From the web console, add a new TestDrive Java application using the following git lab repository <https://gitlab.com/gshipley/nationalparks.git>
 
-Please make sure to select the `master` branch for cloning the project and the Context Dir to empty.
+![](./MediaFolder/media/image1OCP35.JPG)    
 
-5.  List builds operations:
+![](./MediaFolder/media/image2OCP35.JPG)
+
+Please make sure that the `master` branch is selected for cloning the project and the Context Dir is empty and press create.
+
+6.  List builds operations:
 
 ```bash
 oc get builds
@@ -442,7 +446,7 @@ oc get builds
 
 ![](./MediaFolder/media/image48.JPG)
     
-6.  List existing projects, pods and view logs in real time:
+7.  List existing projects, pods and view logs in real time:
 
 ```bash
 oc get projects
@@ -466,13 +470,13 @@ Output truncated ....
 
 ![](./MediaFolder/media/image52.JPG)
     
-7.  Browse the newly created application and verify it is available
+8.  Browse the newly created application and verify it is available
 
 ![](./MediaFolder/media/image53.JPG)
 
 ![](./MediaFolder/media/image54.JPG)
 
-8.  We can see the map but not the attraction points.The reason is that we only deployed the front-end application. What we will need now is to add a backend data base. From the web console, add a new persistent mongodb data store. And set the needed environment variables and specification as bellow:
+9.  We can see the map but not the attraction points.The reason is that we only deployed the front-end application. What we will need now is to add a backend data base. From the web console, add a new ephemeral mongodb data store. And set the needed environment variables and specification as bellow:
 
 ![](./MediaFolder/media/image56.JPG)
 
@@ -480,16 +484,16 @@ Output truncated ....
     
 ![](./MediaFolder/media/image57.JPG)
 
-9.  The graphical portal should show two applications in our project
+10.  The graphical portal should show two applications in our project
 
 ![](./MediaFolder/media/image58.JPG)
 
-10. From the left menu in the web console, click on storage and verify that OpenShift created a persistent storage volume using Azure storage.
+11. From the left menu in the web console, click on storage and verify that OpenShift created an ephemeral storage volume using Azure storage.
 
 ![](./MediaFolder/media/image59.JPG)
     
 
-11. Change the deployment configuration of the front-end application to include the environment variables required to access the database
+12. Change the deployment configuration of the front-end application to include the environment variables required to access the database
 
 ```bash
 oc env dc nationalparklocator -e MONGODB_USER=mongodb MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb
@@ -497,7 +501,7 @@ oc env dc nationalparklocator -e MONGODB_USER=mongodb MONGODB_PASSWORD=mongodb -
 
 ![](./MediaFolder/media/image60.JPG)
 
-12. verify the last modification took place by running 
+13. verify the last modification took place by running 
 
 ```bash
 $ oc get dc nationalparklocator -o json
@@ -505,15 +509,15 @@ $ oc get dc nationalparklocator -o json
 
 ![](./MediaFolder/media/image61.JPG)    
 
-13. Back to the graphical console, note the automatic migration to a new pod based on the new configuration
+14. Back to the graphical console, note the automatic migration to a new pod based on the new configuration
 
 ![](./MediaFolder/media/image62.JPG)
     
-14. Navigate to the application end-point and verify that the parks are now showing on the map
+15. Navigate to the application end-point and verify that the parks are now showing on the map
 
 ![](./MediaFolder/media/image63.JPG)
     
-15. Our new application became very popular, and we need to scale out our front end to two pods. Use "oc scale" to do it
+16. Our new application became very popular, and we need to scale out our front end to two pods. Use "oc scale" to do it
 
 ```bash
 oc get dc
@@ -523,7 +527,7 @@ oc get dc
 
 ![](./MediaFolder/media/image64.JPG)
     
-16. Now, let's test the self-healing, capabilities of OpenShift by deleting one of the running pods. Because, the desired state of the replication controller is 2 pods for the application "nationalparklocator", OpenShift will automatically and instantly trigger the deployment of a new pod.
+17. Now, let's test the self-healing, capabilities of OpenShift by deleting one of the running pods. Because, the desired state of the replication controller is 2 pods for the application "nationalparklocator", OpenShift will automatically and instantly trigger the deployment of a new pod.
     
 ```bash
 oc get pods
