@@ -478,9 +478,9 @@ Output truncated ....
 
 9.  We can see the map but not the attraction points.The reason is that we only deployed the front-end application. What we will need now is to add a backend data base. From the web console, add a new ephemeral mongodb data store. And set the needed environment variables and specification as bellow:
 
-![](./MediaFolder/media/image56.JPG)
+![](./MediaFolder/media/image3OCP35.JPG)
 
-![](./MediaFolder/media/image55.JPG)
+![](./MediaFolder/media/image4OCP35.JPG)
     
 ![](./MediaFolder/media/image57.JPG)
 
@@ -488,12 +488,7 @@ Output truncated ....
 
 ![](./MediaFolder/media/image58.JPG)
 
-11. From the left menu in the web console, click on storage and verify that OpenShift created an ephemeral storage volume using Azure storage.
-
-![](./MediaFolder/media/image59.JPG)
-    
-
-12. Change the deployment configuration of the front-end application to include the environment variables required to access the database
+11. Change the deployment configuration of the front-end application to include the environment variables required to access the database
 
 ```bash
 oc env dc nationalparklocator -e MONGODB_USER=mongodb MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb
@@ -501,7 +496,7 @@ oc env dc nationalparklocator -e MONGODB_USER=mongodb MONGODB_PASSWORD=mongodb -
 
 ![](./MediaFolder/media/image60.JPG)
 
-13. verify the last modification took place by running 
+12. verify the last modification took place by running 
 
 ```bash
 $ oc get dc nationalparklocator -o json
@@ -509,15 +504,15 @@ $ oc get dc nationalparklocator -o json
 
 ![](./MediaFolder/media/image61.JPG)    
 
-14. Back to the graphical console, note the automatic migration to a new pod based on the new configuration
+13. Back to the graphical console, note the automatic migration to a new pod based on the new configuration
 
 ![](./MediaFolder/media/image62.JPG)
     
-15. Navigate to the application end-point and verify that the parks are now showing on the map
+14. Navigate to the application end-point and verify that the parks are now showing on the map
 
 ![](./MediaFolder/media/image63.JPG)
     
-16. Our new application became very popular, and we need to scale out our front end to two pods. Use "oc scale" to do it
+15. Our new application became very popular, and we need to scale out our front end to two pods. Use "oc scale" to do it
 
 ```bash
 oc get dc
@@ -527,7 +522,7 @@ oc get dc
 
 ![](./MediaFolder/media/image64.JPG)
     
-17. Now, let's test the self-healing, capabilities of OpenShift by deleting one of the running pods. Because, the desired state of the replication controller is 2 pods for the application "nationalparklocator", OpenShift will automatically and instantly trigger the deployment of a new pod.
+16. Now, let's test the self-healing, capabilities of OpenShift by deleting one of the running pods. Because, the desired state of the replication controller is 2 pods for the application "nationalparklocator", OpenShift will automatically and instantly trigger the deployment of a new pod.
     
 ```bash
 oc get pods
