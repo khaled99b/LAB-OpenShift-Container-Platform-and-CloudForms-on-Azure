@@ -64,7 +64,7 @@ The Lab challenges cover:
 
 -   Introduction to OpenShift3
 
--   Deployment of OpenShit on Azure
+-   Deployment of OpenShift on Azure
 
 -   Creating and managing OpenShift projects on azure
 
