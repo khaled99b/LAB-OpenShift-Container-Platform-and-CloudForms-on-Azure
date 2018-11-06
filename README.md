@@ -22,7 +22,7 @@ Objectives and pre-requisites
 
 This document describes the steps necessary to deploy and manage Red Hat
 OpenShift container platform, and CloudForms on Azure. The lab is based
-on OpenShift version 3.5 and CloudForms version 4.1.
+on OpenShift version 3.9 and CloudForms version 4.1.
 
 You will need an active Red Hat subscription and a valid Azure account
 to perform the lab instructions.
