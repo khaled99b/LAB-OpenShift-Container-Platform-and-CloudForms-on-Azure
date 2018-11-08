@@ -22,7 +22,7 @@ Objectives and pre-requisites
 
 This document describes the steps necessary to deploy and manage Red Hat
 OpenShift container platform, and CloudForms on Azure. The lab is based
-on OpenShift version 3.9 and CloudForms version 4.1.
+on OpenShift version 3.9 and CloudForms version 4.5.
 
 You will need an active Red Hat subscription and a valid Azure account
 to perform the lab instructions.
@@ -101,19 +101,19 @@ OpenShift offers another alternative to multiple CaaS (container as a service) s
  
 OpenShift container platform is available as an Azure Resource Manager solution at https://github.com/Microsoft/openshift-container-platform.
 
-1.  Login to Azure portal and start a new Bash Cloud shell session.
+1.  Login to Azure portal and start a new [Bash Cloud shell](https://shell.azure.com) session or use your own Bash environment with the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
 
 ![](./MediaFolder/media/image5.JPG)
 
-2.  From the open terminal, create a new ssh key pair with the name "osslab_rsa" and save it under .ssh directory
-
-![](./MediaFolder/media/image7.JPG)
+2.  From the open terminal, create a new ssh key pair with a name of your choosing like "osslab_rsa" and save it under .ssh directory
 
 ```bash   
 $ ssh-keygen
 ``` 
 
-3.  Use the Azure CLI v2 to create a new resource group to host the lab resources
+![](./MediaFolder/media/image7.JPG)
+
+3.  Use the Azure CLI to create a new resource group to host the lab resources
 
 ![](./MediaFolder/media/image8.JPG)
 
@@ -121,7 +121,7 @@ $ ssh-keygen
 $ az group create -n ossdemo -l 'West Europe'
 ```
 
-4.  Create a Key Vault and add your *ssh* private key, created in the previous step. The name of the Key Vault should be unique as it containes a public endpoint.
+4.  Create a Key Vault and add your ***ssh private key***, created in the previous step. The name of the Key Vault should be unique as it containes a public endpoint.
 
 ![](./MediaFolder/media/image9.JPG)
 
@@ -141,7 +141,7 @@ policy and permissions for an application's use in a specific tenant, providing 
 5.  Create an Azure Active Directory Service Principal and choose a different password. Copy the resource group scope (id) from step number 3. The name of the Service Principal should be unique as it contians a public endpoint.
 
 ```bash
-$ az ad sp create-for-rbac -n openshiftcloudprovider --password changeMePassword --role contributor --scopes subscriptions/f3a5dfdb-e863-40d9-b23c-752b886c0260/resourceGroups/ossdemo
+$ az ad sp create-for-rbac -n openshiftcloudprovider --password <CHANGE-ME-PASSWORD> --role contributor --scopes <RG-ID-COPIED-FROM-STEP3>
 ```
 ![](./MediaFolder/media/image11.JPG)
 
@@ -160,9 +160,9 @@ $ az ad sp show --id http://openshiftcloudprovider
 ```
 
 8.  Use the following Azure resource manager solutions
-[template](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fopenshift-container-platform%2Frelease-3.6%2Fazuredeploy.json)
+[template](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fopenshift-container-platform%2Fmaster%2Fazuredeploy.json)
 to deploy your OpenShift environment:
-<https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fopenshift-container-platform%2Frelease-3.6%2Fazuredeploy.json>
+<https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fopenshift-container-platform%2Fmaster%2Fazuredeploy.json>
 
 -   At this stage we will need Red Hat Network or Red Hat satellite credentials to register RHEL vms with RedHat and get access to the required software channels during the deployment. More specifically,
 we will need:
@@ -172,19 +172,17 @@ we will need:
 
 -   PoolId provides access to the required software channels for Openshift and Cloudforms. PoolId can be listed by invoking the command 'subscription-manager list -available' from a registered RHEL system. Also can be listed if you login to [RHN](https://rhn.redhat.com/) and select the OpenShift subscription that will be used. Contact your Red Hat admin or Red Hat support if you are missing information.
 
--   For high availability consideration, we are deploying 3 vms for each type (master, infra and agent). If you want to deploy the lab with minimal cost, you can reduce the number of vms to one per each. Also, you can scale down the vm families, but preferably stick to vms with SSD disks for faster deployment.
+-   For high availability consideration, we are deploying 3 master and infra vms and 2 worker node vms. If you want to deploy the lab with minimal cost, you can reduce the number of vms to one per each. Also, you can scale down the vm families, but preferably stick to vms with SSD disks for faster deployment.
 
--   The master and infra load balancer DNSs (in red circles) should be globally unique. Choose your own names.
 
 ![](./MediaFolder/media/image15.JPG)
 ![](./MediaFolder/media/image16.JPG)
 ![](./MediaFolder/media/image17.JPG)
 ![](./MediaFolder/media/image18.JPG)
 ![](./MediaFolder/media/image19.JPG)
-![](./MediaFolder/media/image15.JPG)
 
 
-9.  From the Azure portal, go to your resource group "ossdemo", track the progress of the deployment and make sure the deployment finishes, successfully. The process should last around 20 minutes. It is a good time to have a break.
+1.  From the Azure portal, go to your resource group "ossdemo", track the progress of the deployment and make sure the deployment finishes, successfully. The process should last around 20 minutes. It is a good time to have a break.
 
 ![](./MediaFolder/media/image20.png)
 
